@@ -15,7 +15,7 @@ class QuestionLoader:
         questions=[]
 
         for item in data:
-3            answers = [
+            answers = [
                 Answer(a["text"], a["correct"])
                 for a in item["answers"]
             ]
