@@ -1,21 +1,17 @@
 import json
-import os
 
-from core.question import Question
-from core.answer import Answer
 
-class QuestionLoader:
+class SettingsLoader:
+    
     @staticmethod
-    def load(filename):
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(base_dir, filename)
-        with open(filename, "r",encoding="utf-8") as f:
+    def load():
+        with open("data/settings.json","r",encoding="utf-8") as f:
             data = json.load(f)
             
             """
             data - type - list
             data[0] - type - dict
-            """
+         
             
         questions=[]
 
@@ -34,3 +30,6 @@ class QuestionLoader:
                 )
             )
         return questions
+         """
+        return True
+
