@@ -9,10 +9,10 @@ class User:
             nameUser ="data/users/"+self.name+".json" 
             with open(nameUser,"r",encoding="utf-8") as f:
                 data = json.load(f)
-                return True
+                return data
         except FileNotFoundError:
             #print("Пользователь не найден")
-            return False
+            return None
         except Exception as e:
             raise e
         else:
