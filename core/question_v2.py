@@ -11,8 +11,8 @@ class Question_v2:
         random.shuffle(self.answers)
 
     def show(self):
-        """Отображение вопроса и вариантов ответа""" 
-        print(f"\nВопрос №"{self.id})
+        """Отображение вопроса и вариантов ответа"""
+        print(f"\nВопрос №{self.id}")
         print(self.question)
         print()
 

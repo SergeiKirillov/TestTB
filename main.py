@@ -6,6 +6,7 @@ from core.settings_loader import SettingsLoader
 from core.test_session import TestSession_0
 from ui.console_ui import ConsoleUI_0
 from core.testing import Testing
+from core.question_db import QuestionDB
 
 #сброс персональных данных
 login_name = None
@@ -74,16 +75,21 @@ while True:
             if login_name is None:
                 break
             else:
-                
+                #Загружаем вопросы
+                db=QuestionDB("data/questions.json")
+
                 numbers_god_number=user_session["question_stats"]
                 ans = Testing(numbers_god_number)
 
                 for ask in range(countAns):
                    #генерируем случайное число из избранного списка за исключением вопросов на которые ранее были получены положительные ответы  
                    answers_number = ans.rand_ans()
-                   print(answers_number)
+                   #print(answers_number)
                    #Подготавливаем и выводим  выбранный Вопрос
-                   
+                   question = db.get_question(answers_number)
+                   if question: 
+                       question.show()
+
 
                    #отвечаем на вопрос и проверяем ответ
                    
