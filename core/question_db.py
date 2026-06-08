@@ -35,6 +35,8 @@ class Question_v2:
         for answer in self.answers:
             if answer["correct"]:
                 return answer["text"]
+            
+
 
 
 class QuestionDB:

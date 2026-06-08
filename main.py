@@ -77,7 +77,9 @@ while True:
             else:
                 #Загружаем вопросы
                 db=QuestionDB("data/questions.json")
-
+                
+                numbers_god_number=[]
+                number_god_session=[]
                 numbers_god_number=user_session["question_stats"]
                 ans = Testing(numbers_god_number)
 
@@ -89,19 +91,25 @@ while True:
                    question = db.get_question(answers_number)
                    if question: 
                        question.show()
+                       #отвечаем на вопрос и проверяем ответ                       quest_number_user = int(input("\nВведите правильный ответ "))
+                       if question.check_answer(quest_number_user):
+                           #если ответ правильный
+                           print("Правильно")
+                           #если правильно то добавляем в список этот вопрос 
+                           number_god_session.append(answers_number)
+                           
+                       else:
+                           print("Неправильно")
+                           print(f"Правильный ответ: {question.get_correct_answer()}")
 
-
-                   #отвечаем на вопрос и проверяем ответ
-                   
-                   #если ответ правильный то записываем его в статистику класса
-
+                #блок записи в статистику правильных ответов     
+                #список номеров вопросов на которые был получен правильные ответы
+                full_ans=number_god_session
+                user.save_user(full_ans)
         case 4:
             questions = QuestionLoader.load(
                 "data/questions.json"
             )
-
-
-
         case 9:
             #Загружаем настройки
             settings = SettingsLoader.load()
@@ -109,7 +117,6 @@ while True:
         case 0:
             print('Завершение работы')
             break  # Выходим из цикла
-
         case 11:
             #проверка по всем вопросам без статистики
             questions = QuestionLoader.load(

@@ -29,7 +29,7 @@ class User:
                 "total_questions": 0,
                 "total_correct": 0,
                 "total_wrong": 0,
-                "question_stats": {}
+                "question_stats": []
             }
             file_name ="data/users/"+self.name+".json" 
             with open(file_name,"w", encoding="utf-8") as file:
@@ -43,3 +43,31 @@ class User:
         except Exception as e:
             raise e
         
+    def save_user(self, correct_questions):
+        """
+        name - имя пользователя
+
+        correct_questions - список номеров вопросов,
+        на которые пользователь ответил правильно
+        """
+        try:
+            file_name = "data/users/"+ self.name +".json"
+            with open(file_name,"r", encoding="utf-8") as file:
+                user_data = json.load(file)
+            # Добавляем новые вопросы, избегая дубликатов
+            current_questions = set(user_data["question_stats"])
+
+            for qid in correct_questions:
+                current_questions.add(qid)
+            
+            user_data["question_stats"]=sorted(list(current_questions))
+
+            with open(file_name, "w", encoding="utf-8") as file:
+                json.dump(
+                    user_data,
+                    file,
+                    ensure_ascii=False,
+                    indent=4
+                )
+        except Exception as e:
+            raise e
