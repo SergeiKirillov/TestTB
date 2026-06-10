@@ -108,7 +108,7 @@ while True:
 
                 #блок записи в статистику правильных ответов     
                 #список номеров вопросов на которые был получен правильные ответы
-                print(f"Кол- во вопросов {len(numbers_god_number)}, кол-во правильных ответов {len(number_god_session)}")
+                print(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
                 full_ans=number_god_session
                 user.save_user(full_ans)
         case 4:
