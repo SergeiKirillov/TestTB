@@ -7,12 +7,14 @@ from core.test_session import TestSession_0
 from ui.console_ui import ConsoleUI_0
 from core.testing import Testing
 from core.question_db import QuestionDB
+from colorama import init, Fore, Back, Style
 
 #сброс персональных данных
 login_name = None
 countAns = None
 questions = QuestionLoader.load("data/questions.json")
 
+init(autoreset=True) #Инициализация colorama для корректной работы в Windows
 
 while True:
 
@@ -91,19 +93,22 @@ while True:
                    question = db.get_question(answers_number)
                    if question: 
                        question.show()
-                       #отвечаем на вопрос и проверяем ответ                       quest_number_user = int(input("\nВведите правильный ответ "))
+                       #отвечаем на вопрос и проверяем ответ                       
+                       quest_number_user = int(input("\nВведите правильный ответ "))
                        if question.check_answer(quest_number_user):
                            #если ответ правильный
-                           print("Правильно")
+                           print(Back.GREEN+Fore.BLACK+"Правильно")
+                           
                            #если правильно то добавляем в список этот вопрос 
                            number_god_session.append(answers_number)
                            
                        else:
-                           print("Неправильно")
+                           print(Back.RED+Fore.WHITE+"Неправильно")
                            print(f"Правильный ответ: {question.get_correct_answer()}")
 
                 #блок записи в статистику правильных ответов     
                 #список номеров вопросов на которые был получен правильные ответы
+                print(f"Кол- во вопросов {len(numbers_god_number)}, кол-во правильных ответов {len(number_god_session)}")
                 full_ans=number_god_session
                 user.save_user(full_ans)
         case 4:
