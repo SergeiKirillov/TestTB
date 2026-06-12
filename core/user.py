@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 
 class User:
     def __init__(self, name):
@@ -6,8 +7,11 @@ class User:
     
     def LoadUser(self):
         try:
-            nameUser ="data/users/"+self.name+".json" 
-            with open(nameUser,"r",encoding="utf-8") as f:
+
+            #nameUser ="data/users/"+self.name+".json" 
+            file_path = Path("data")/ "users" / f"{self.name}.json"
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(file_path,"r",encoding="utf-8") as f:
                 data = json.load(f)
                 return data
         except FileNotFoundError:
@@ -31,8 +35,12 @@ class User:
                 "total_wrong": 0,
                 "question_stats": []
             }
-            file_name ="data/users/"+self.name+".json" 
-            with open(file_name,"w", encoding="utf-8") as file:
+
+            #file_name ="data/users/"+self.name+".json" 
+            #with open(file_name,"w", encoding="utf-8") as file:
+            file_path = Path("data")/ "users" / f"{self.name}.json"
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(file_path,"w",encoding="utf-8") as file:
                 json.dump(
                     user_data,
                     file,
@@ -51,8 +59,13 @@ class User:
         на которые пользователь ответил правильно
         """
         try:
-            file_name = "data/users/"+ self.name +".json"
-            with open(file_name,"r", encoding="utf-8") as file:
+            
+            #file_name = "data/users/"+ self.name +".json"
+            #with open(file_name,"r", encoding="utf-8") as file:
+            
+            file_path = Path("data")/ "users" / f"{self.name}.json"
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(file_path,"r",encoding="utf-8") as file:
                 user_data = json.load(file)
             # Добавляем новые вопросы, избегая дубликатов
             current_questions = set(user_data["question_stats"])
@@ -62,7 +75,7 @@ class User:
             
             user_data["question_stats"]=sorted(list(current_questions))
 
-            with open(file_name, "w", encoding="utf-8") as file:
+            with open(file_path, "w", encoding="utf-8") as file:
                 json.dump(
                     user_data,
                     file,
