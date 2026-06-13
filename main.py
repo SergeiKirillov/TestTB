@@ -19,19 +19,20 @@ countAns = None
 questions = QuestionLoader.load("data/questions.json")
 
 #init(autoreset=True) #Инициализация colorama для корректной работы в Windows
-print(f"\nДобро пожаловать!") 
+console.print(f"\nДобро пожаловать!") 
 while True:
 
-    print(f"Выберите пункт меню:")
+    console.print(f"Выберите пункт меню:")
     if login_name is None:
-        print("""
+        console.print("""\n
     0 Выход   
     _____________                    
     1 Вход
     2 Регистрация
               """)
     else:
-        print('''
+        console.print("\n")
+        console.print('''\n          
     3 Режим тестирования
     4 Режим проверки знаний
     _______________________          
@@ -63,8 +64,8 @@ while True:
                 #if (input("Вы уверены что не ошибл1ись в написании ЛОГИНа. Создать нового пользователя Y/N - ").lower()=="y"):
                 console.print("[bold red]Пользователь НЕ найден[/bold red]")
             #Очистка консоли
-            input("\nНажмите Enter для продолжения...")
-            console.clear()
+            console.input("\nНажмите Enter для продолжения...")
+            #console.clear()
 
 
 
@@ -88,8 +89,8 @@ while True:
             countAns = user_session["questions_per_session"]
 
             #Очистка консоли
-            input("\nНажмите Enter для продолжения...")
-            console.clear()
+            console.input("\nНажмите Enter для продолжения...")
+            #console.clear()
         
 
         case 3:
@@ -105,7 +106,7 @@ while True:
                 ans = Testing(numbers_god_number)
 
                 for ask in range(countAns):
-                    console.clear()
+                    #console.clear()
                     # обновляем описание (текущий вопрос)
 
                     #генерируем случайное число из избранного списка за исключением вопросов на которые ранее были получены положительные ответы  
@@ -132,7 +133,7 @@ while True:
                             #print(Back.RED+Fore.WHITE+"Неправильно")
                             console.print("[bold red]Неправильно[/bold red]")
                             console.print(f"Правильный ответ: {question.get_correct_answer()}")
-                    input("\nНажмите Enter для продолжения...")
+                    console.input("\nНажмите Enter для продолжения...")
 
                 #блок записи в статистику правильных ответов     
                 #список номеров вопросов на которые был получен правильные ответы
@@ -161,6 +162,6 @@ while True:
                 q = session.get_next_question()
                 answer = ui.ask_question(q)
                 if session.process_answer(q, answer):
-                    print("Верно")
+                    console.print("Верно")
                 else:
-                    print("Неверно")
+                    console.print("Неверно")
