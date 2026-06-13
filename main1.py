@@ -10,8 +10,11 @@ from core.question_db import QuestionDB
 
 #from colorama import init, Fore, Back, Style
 from rich import print #https://habr.com/ru/articles/962608/
+from rich.progress import Progress
+from rich.live import Live
 from rich.console import Console
-console=Console()
+from rich.panel import Panel
+console = Console()
 
 #сброс персональных данных
 login_name = None
@@ -47,13 +50,12 @@ while True:
             login_name = None
             countAns = None
 
-            
             #Загружаем пользователя
-            user_name = console.input("Введите ЛОГИН: ")
+            user_name = input("Введите ЛОГИН: ")
             user = User(user_name)
             user_session=user.LoadUser()
             if user_session is not None:
-                console.print("[bold green]Пользователь найден[/bold green]")
+                print("[bold green]Пользователь найден[/bold green]")
                 login_name=user_name
                 #Загружаем настройки
                 #settings = SettingsLoader.load()
@@ -61,22 +63,16 @@ while True:
                 countAns = user_session["questions_per_session"]
             else:
                 #if (input("Вы уверены что не ошибл1ись в написании ЛОГИНа. Создать нового пользователя Y/N - ").lower()=="y"):
-                console.print("[bold red]Пользователь НЕ найден[/bold red]")
-            #Очистка консоли
-            input("\nНажмите Enter для продолжения...")
-            console.clear()
-
-
+                print("[bold red]Пользователь НЕ найден[/bold red]")
 
         case 2:
-            
-            console.print("Регистрация")
+            print("Регистрация")
 
             #сброс персональных данных
             login_name = None
             countAns = None
 
-            name = console.input("Введите логин нового пользователя - ")
+            name = input("Введите логин нового пользователя - ")
             user=User(name)
             user.createUser()
             login_name=name
@@ -86,11 +82,6 @@ while True:
             # countAns = settings["questions_per_session"]
             user_session=user.LoadUser()
             countAns = user_session["questions_per_session"]
-
-            #Очистка консоли
-            input("\nНажмите Enter для продолжения...")
-            console.clear()
-        
 
         case 3:
             if login_name is None:
@@ -104,41 +95,59 @@ while True:
                 numbers_god_number=user_session["question_stats"]
                 ans = Testing(numbers_god_number)
 
-                for ask in range(countAns):
-                    console.clear()
-                    # обновляем описание (текущий вопрос)
+                # === PROGRESS BAR ===
+                progress = Progress()
+                task = progress.add_task("Тест", total=countAns)
 
-                    #генерируем случайное число из избранного списка за исключением вопросов на которые ранее были получены положительные ответы  
-                    answers_number = ans.rand_ans()
-                    #print(answers_number)
-                    #Подготавливаем и выводим  выбранный Вопрос
+                current_question_text = "Подготовка..."
 
-                    question = db.get_question(answers_number)
-                    if question: 
-                        current_question_text = f"Вопрос {ask + 1}/{countAns}"
-                        # обновляем экран с вопросом
-                        console.print(current_question_text)
-                        question.show()
-                        #отвечаем на вопрос и проверяем ответ                       
-                        quest_number_user = int(input("\nВведите правильный ответ "))
+                def render_screen():
+                    return Panel(
+                        progress,
+                        title=f"[bold cyan]Тестирование знаний[/]",
+                        subtitle=current_question_text
+                    )
+
+                with Live(render_screen(), console=console, refresh_per_second=10) as live:
+
+                    for ask in range(countAns):
+                        # обновляем описание (текущий вопрос)
+
+                        #генерируем случайное число из избранного списка за исключением вопросов на которые ранее были получены положительные ответы  
+                        answers_number = ans.rand_ans()
+                        #print(answers_number)
+                        #Подготавливаем и выводим  выбранный Вопрос
+
+                        question = db.get_question(answers_number)
+                        if question: 
+                        
+                            current_question_text = f"Вопрос {ask + 1}/{countAns}"
+                            # обновляем экран с вопросом
+                            live.update(render_screen())
+                        
+                            question.show()
+                            #отвечаем на вопрос и проверяем ответ                       
+                            quest_number_user = int(input("\nВведите правильный ответ "))
                           
-                        if question.check_answer(quest_number_user):
-                            #если ответ правильный
-                            #print(Back.GREEN+Fore.BLACK+"Правильно")
-                            console.print("[bold green]Правильно[/bold green]")
-                            #если правильно то добавляем в список этот вопрос 
-                            number_god_session.append(answers_number)
-                        else:
-                            #print(Back.RED+Fore.WHITE+"Неправильно")
-                            console.print("[bold red]Неправильно[/bold red]")
-                            console.print(f"Правильный ответ: {question.get_correct_answer()}")
-                    input("\nНажмите Enter для продолжения...")
+                    
+                            if question.check_answer(quest_number_user):
+                                #если ответ правильный
+                                #print(Back.GREEN+Fore.BLACK+"Правильно")
+                                console.print("[bold green]Правильно[/bold green]")
+                                #если правильно то добавляем в список этот вопрос 
+                                number_god_session.append(answers_number)
+                            else:
+                                #print(Back.RED+Fore.WHITE+"Неправильно")
+                                console.print("[bold red]Неправильно[/bold red]")
+                                console.print(f"Правильный ответ: {question.get_correct_answer()}")
+                        progress.update(task, advance=1)
+                        
 
-                #блок записи в статистику правильных ответов     
-                #список номеров вопросов на которые был получен правильные ответы
-                console.print(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
-                full_ans=number_god_session
-                user.save_user(full_ans)
+                    #блок записи в статистику правильных ответов     
+                    #список номеров вопросов на которые был получен правильные ответы
+                    console.print(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
+                    full_ans=number_god_session
+                    user.save_user(full_ans)
         case 4:
             questions = QuestionLoader.load(
                 "data/questions.json"

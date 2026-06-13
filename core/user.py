@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from rich import print 
 
 class User:
     def __init__(self, name):
@@ -33,6 +34,7 @@ class User:
                 "total_questions": 0,
                 "total_correct": 0,
                 "total_wrong": 0,
+                "questions_per_session": 10,
                 "question_stats": []
             }
 
@@ -47,7 +49,8 @@ class User:
                     ensure_ascii=False,
                     indent=4
                 )
-            print(f"Пользователь {self.name} создан")
+            print(f"[bold yellow]Пользователь {self.name} создан[/bold yellow]")
+            #print("[bold yellow]Войдите под именем нового пользователя.[/bold yellow]")
         except Exception as e:
             raise e
         
