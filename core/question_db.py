@@ -13,12 +13,17 @@ class Question_v2:
 
     def show(self):
         """Отображение вопроса и вариантов ответа"""
-        print(f"\nВопрос №{self.id}")
-        print(self.question)
-        print()
+        #print(f"\nВопрос №{self.id}")
+        #print(self.question)
+        #print()
+
+        #return (f"\nВопрос №{self.id}\n{self.question}\n")
+        que_show = f"\nВопрос №{self.id} \n {self.question} \n"
 
         for i, answer in enumerate(self.answers, start=1):
-            print(f"{i}. {answer['text']}")
+            que_show = que_show + f"\n{i}. {answer['text']}"
+
+        return que_show
 
     def check_answer(self, user_choice):
         """

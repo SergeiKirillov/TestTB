@@ -8,7 +8,6 @@ class User:
     
     def LoadUser(self):
         try:
-
             #nameUser ="data/users/"+self.name+".json" 
             file_path = Path("data")/ "users" / f"{self.name}.json"
             file_path.parent.mkdir(parents=True, exist_ok=True)
@@ -49,7 +48,7 @@ class User:
                     ensure_ascii=False,
                     indent=4
                 )
-            print(f"[bold yellow]Пользователь {self.name} создан[/bold yellow]")
+            #print(f"[bold yellow]Пользователь {self.name} создан[/bold yellow]")
             #print("[bold yellow]Войдите под именем нового пользователя.[/bold yellow]")
         except Exception as e:
             raise e
