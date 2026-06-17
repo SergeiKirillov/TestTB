@@ -5,30 +5,5 @@
     "total_correct": 0,
     "total_wrong": 0,
     "questions_per_session": 10,
-    "question_stats": [
-        1,
-        11,
-        12,
-        24,
-        33,
-        36,
-        53,
-        57,
-        61,
-        67,
-        79,
-        82,
-        92,
-        94,
-        97,
-        112,
-        126,
-        135,
-        169,
-        171,
-        181,
-        195,
-        196,
-        199
-    ]
+    "question_stats": []
 }
