@@ -55,19 +55,19 @@ class Application:
                 if question:
                     current_question_text = f"Вопрос {ask + 1}/{countAns}"
                     # обновляем экран с вопросом
-                    self.ui.show_message(current_question_text)
-                    self.ui.show_message(question.show())
+                    self.ui.show_question(current_question_text)
+                    self.ui.show_question(question.show())
                     
                     #отвечаем на вопрос и проверяем ответ                       
                     quest_number_user = int(self.ui.ask_input("\nВведите правильный ответ "))
                           
                     if question.check_answer(quest_number_user):
                         #если ответ правильный
-                        self.ui.show_message("Правильно")
+                        self.ui.success("Правильно")
                         #если правильно то добавляем в список этот вопрос 
                         number_god_session.append(answers_number)
                     else:
-                        self.ui.show_message("Не Правильно")
+                        self.ui.error("Не Правильно")
                         self.ui.show_message(f"Правильный ответ: {question.get_correct_answer()}")
 
             #блок записи в статистику правильных ответов     

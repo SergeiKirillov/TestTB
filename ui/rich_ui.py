@@ -75,3 +75,9 @@ class RichUI(BaseUI):
 
     def show_question(self, question):
         self.console.print(question)
+
+    def success(self, text):
+        self.console.print(f"[green]✓ {text}[/green]")
+    
+    def error(self, text):
+        self.console.print(f"[bold red]✗ {text}[/bold red]")

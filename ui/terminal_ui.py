@@ -15,3 +15,10 @@ class TerminalUI(BaseUI):
 
     def show_question(self, question):
         print(question)
+
+    def success(self, text):
+        print(text)
+    
+    def error(self, text):
+        print(text)
+

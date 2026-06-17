@@ -15,3 +15,11 @@ class BaseUI(ABC):
     @abstractmethod
     def show_question(self, question):
         pass
+
+    @abstractmethod
+    def success(self, text: str):
+        pass
+
+    @abstractmethod
+    def error(self, text: str):
+        pass
