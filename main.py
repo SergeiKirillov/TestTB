@@ -10,7 +10,7 @@ def parse_args():
     parser.add_argument(
         "--ui", 
         choices=["terminal", "rich"], 
-        default="terminal"
+        default="terminal",
         help="Тип интерфейса"
     )
     parser.add_argument(
@@ -25,4 +25,8 @@ if __name__=="__main__":
     args = parse_args()
    
     app = Application(ui_type = args.ui , theme=args.theme)
-    app.run()
+    if args.theme is None:
+        app.selectDB()
+    else:
+        app.run()
+    

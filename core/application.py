@@ -1,7 +1,7 @@
 from core.user import User
 from core.question_db import QuestionDB
 from core.testing import Testing
-
+from core.testManager import TestManager
 
 class Application:
 
@@ -14,6 +14,8 @@ class Application:
             from ui.terminal_ui import TerminalUI
             self.ui = TerminalUI()
         self.current_user = None
+        self.fileJSONdescript = None
+        self.selected_test=None
         
 
     def login(self):
@@ -110,6 +112,7 @@ class Application:
                 self.registration()
             case 0:
                 raise SystemExit
+    
     def user_menu(self):
         choice = self.ui.show_menu(
                     f"Выбран пользователь: {self.current_user}",
@@ -133,10 +136,26 @@ class Application:
             case 0:
                 raise SystemExit
 
+    def selectDB(self):
+        manager = TestManager()
+        tests = manager.get_tests_names()
+        Сделать меню выбора теста
+        for i, test in enumerate(tests, 1):
+            print(f"{i}. {test}")
+        choice = int(input("> "))
+        self.selected_test = tests[choice - 1]
+        self.theme=self.selected_test
+        selectDB = manager.load_test(self.selected_test)
+        self.fileJSONdescript=selectDB["title"]
+        self.run()
+
     def run(self):
-        self.ui.show_message("Тема вопросов: {self.theme}")
+        self.ui.show_message(self.theme) #Имя файла BD тестов
+        self.ui.show_message(self.fileJSONdescript) #Имя теста
+
         while True:
             if self.current_user is None:
                 self.guest_menu()
             else:
                 self.user_menu()
+    
