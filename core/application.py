@@ -12,6 +12,7 @@ class Application:
 
     def login(self):
         self.current_user=self.ui.ask_input("Введите имя пользователя > ")
+        print(self.current_user)
         userSetting = User(self.current_user)
         count_quest = userSetting.LoadUser()
         if count_quest is None:
@@ -69,12 +70,14 @@ class Application:
                     else:
                         self.ui.error("Не Правильно")
                         self.ui.show_message(f"Правильный ответ: {question.get_correct_answer()}")
+                    self.ui.pause()
 
             #блок записи в статистику правильных ответов     
             #список номеров вопросов на которые был получен правильные ответы
             self.ui.show_message(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
             full_ans=number_god_session
             user.save_user(full_ans)
+            self.ui.pause()
         
 
 

@@ -81,3 +81,6 @@ class RichUI(BaseUI):
     
     def error(self, text):
         self.console.print(f"[bold red]✗ {text}[/bold red]")
+    
+    def pause(self):
+        self.console.input("\n[dim]Нажмите Enter для продолжения...[/dim]")

@@ -23,3 +23,7 @@ class BaseUI(ABC):
     @abstractmethod
     def error(self, text: str):
         pass
+
+    @abstractmethod
+    def pause(self):
+        pass

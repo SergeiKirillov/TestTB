@@ -22,3 +22,6 @@ class TerminalUI(BaseUI):
     def error(self, text):
         print(text)
 
+    def pause(self):
+        input("\nНажмите Enter для продолжения...")
+
