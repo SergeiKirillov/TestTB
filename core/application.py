@@ -5,8 +5,14 @@ from core.testing import Testing
 
 class Application:
 
-    def __init__(self, ui):
-        self.ui = ui
+    def __init__(self, ui_type="terminal", theme=None):
+        self.theme=theme
+        if ui_type == "rich":
+            from ui.rich_ui import RichUI
+            self.ui = RichUI()
+        else:
+            from ui.terminal_ui import TerminalUI
+            self.ui = TerminalUI()
         self.current_user = None
         
 
@@ -128,6 +134,7 @@ class Application:
                 raise SystemExit
 
     def run(self):
+        self.ui.show_message("Тема вопросов: {self.theme}")
         while True:
             if self.current_user is None:
                 self.guest_menu()

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 class BaseUI(ABC):
     @abstractmethod
-    def show_message(self, text):
+    def show_message(self, text:str):
         pass
     
     @abstractmethod
@@ -9,7 +9,7 @@ class BaseUI(ABC):
         pass
 
     @abstractmethod
-    def ask_input(self, text):
+    def ask_input(self, text:str):
         pass
 
     @abstractmethod

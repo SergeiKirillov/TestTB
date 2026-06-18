@@ -3,16 +3,26 @@ from core.application import Application
 from ui.terminal_ui import TerminalUI
 from ui.rich_ui import RichUI
 
-parser = argparse.ArgumentParser()
-parser.add_argument("--ui", choices=["terminal", "rich"], default="terminal")
-args = parser.parse_args()
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Система проверки знаний"
+    )
+    parser.add_argument(
+        "--ui", 
+        choices=["terminal", "rich"], 
+        default="terminal"
+        help="Тип интерфейса"
+    )
+    parser.add_argument(
+        "--theme",
+        default=None,
+        help="Тема вопросов"
+    )
+    return parser.parse_args()
 
-if args.ui == "terminal":
-    ui = TerminalUI()
-else:
-    ui = RichUI()
 
-app = Application(ui)
-app.run()
-
-
+if __name__=="__main__":
+    args = parse_args()
+   
+    app = Application(ui_type = args.ui , theme=args.theme)
+    app.run()
