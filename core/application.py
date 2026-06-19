@@ -139,11 +139,14 @@ class Application:
     def selectDB(self):
         manager = TestManager()
         tests = manager.get_tests_names()
-        Сделать меню выбора теста
-        for i, test in enumerate(tests, 1):
-            print(f"{i}. {test}")
-        choice = int(input("> "))
-        self.selected_test = tests[choice - 1]
+        choice = self.ui.show_menu("Выбор тестов",tests)
+
+
+        #Сделать меню выбора теста
+        #for i, test in enumerate(tests, 1):
+        #    print(f"{i}. {test}")
+        #choice = int(input("> "))
+        self.selected_test = tests[choice]
         self.theme=self.selected_test
         selectDB = manager.load_test(self.selected_test)
         self.fileJSONdescript=selectDB["title"]
