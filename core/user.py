@@ -26,7 +26,6 @@ class User:
 
     def createUser(self):
         try:
-            
             user_data = {
                 "name": self.name,
                 "total_tests": 0,
@@ -34,7 +33,8 @@ class User:
                 "total_correct": 0,
                 "total_wrong": 0,
                 "questions_per_session": 10,
-                "question_stats": []
+                "topics": {
+                }
             }
 
             #file_name ="data/users/"+self.name+".json" 

@@ -28,5 +28,6 @@ if __name__=="__main__":
     if args.theme is None:
         app.selectDB()
     else:
-        app.run()
+        app.run("electrical")
     
+

@@ -2,6 +2,7 @@ from core.user import User
 from core.question_db import QuestionDB
 from core.testing import Testing
 from core.testManager import TestManager
+from pathlib import Path
 
 class Application:
 
@@ -17,10 +18,11 @@ class Application:
         self.fileJSONdescript = None
         self.selected_test=None
         
+        
 
     def login(self):
         self.current_user=self.ui.ask_input("Введите имя пользователя > ")
-        print(self.current_user)
+        # print(self.current_user)
         userSetting = User(self.current_user)
         count_quest = userSetting.LoadUser()
         if count_quest is None:
@@ -40,17 +42,21 @@ class Application:
                
         
     def testing(self):
+        # Загружаем настройки пользователя  
         user = User(self.current_user)
         userSetting = user.LoadUser()
 
+        #Если настроек нет то выходим  
         if userSetting is None:
             raise SystemExit
         else:
             #Загружаем вопросы
-            db=QuestionDB("data/questions.json")
-                
+            selDB = Path("data")/ "tests" / f"{self.selected_test}.json"
+            db=QuestionDB(selDB)
+            
             numbers_god_number=[]
             number_god_session=[]
+
             numbers_god_number=userSetting["question_stats"]
             countAns =userSetting["questions_per_session"]
             ans = Testing(numbers_god_number) #Передаем номера вопросов  
@@ -140,22 +146,29 @@ class Application:
         manager = TestManager()
         tests = manager.get_tests_names()
         choice = self.ui.show_menu("Выбор тестов",tests)
-
-
-        #Сделать меню выбора теста
-        #for i, test in enumerate(tests, 1):
-        #    print(f"{i}. {test}")
-        #choice = int(input("> "))
         self.selected_test = tests[choice]
-        self.theme=self.selected_test
-        selectDB = manager.load_test(self.selected_test)
-        self.fileJSONdescript=selectDB["title"]
-        self.run()
+        self.run(self.selected_test)
 
-    def run(self):
-        self.ui.show_message(self.theme) #Имя файла BD тестов
-        self.ui.show_message(self.fileJSONdescript) #Имя теста
+    def loadDB(self,SelectTest):
+        try:
+            manager = TestManager()
+            selectDBload = manager.load_test(SelectTest)
+            self.fileJSONdescript=selectDBload["title"]
+            return selectDBload
+        except Exception as e:
+            raise e
+        
+    
 
+    def run(self, nameDb:str):
+        # Проверка что файл существует
+        if nameDb is not None:
+            db = self.loadDB(nameDb)
+        else:
+            self.ui.error("База не найдена")   
+            raise SystemExit
+
+        self.ui.show_message(db["title"])
         while True:
             if self.current_user is None:
                 self.guest_menu()
