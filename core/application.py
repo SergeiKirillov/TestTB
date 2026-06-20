@@ -16,7 +16,7 @@ class Application:
             self.ui = TerminalUI()
         self.current_user = None
         self.fileJSONdescript = None
-        self.selected_test=None
+        self.selected_test=None  #имя файла выбранных тестов
         
         
 
@@ -98,9 +98,10 @@ class Application:
 
             #блок записи в статистику правильных ответов     
             #список номеров вопросов на которые был получен правильные ответы
+
             self.ui.show_message(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
             full_ans=number_god_session
-            user.save_user(full_ans)
+            user.save_user(self.selected_test,full_ans)
             self.ui.pause()
         
 

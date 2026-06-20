@@ -53,7 +53,7 @@ class User:
         except Exception as e:
             raise e
         
-    def save_user(self, correct_questions):
+    def save_user(self,db,correct_questions):
         """
         name - имя пользователя
 
@@ -69,6 +69,14 @@ class User:
             file_path.parent.mkdir(parents=True, exist_ok=True)
             with open(file_path,"r",encoding="utf-8") as file:
                 user_data = json.load(file)
+            #Ищем ключь равный имени файла теста
+            if db in user_data:
+                #Если найден то добавляем в [ключ][ключ] список правильных ответов
+                ...
+            else:
+                #Если не найден, то добавляем всю секцию
+                ...
+            
             # Добавляем новые вопросы, избегая дубликатов
             current_questions = set(user_data["question_stats"])
 
