@@ -1,5 +1,5 @@
 {
-    "id": "electrical_safety",
+    "idDB": "electrical_safety",
     "title": "Электробезопасность",
     "description": "Проверка знаний по электробезопасности",
     "version": "1.0",

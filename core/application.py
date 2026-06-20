@@ -56,17 +56,27 @@ class Application:
             
             numbers_god_number=[]
             number_god_session=[]
-
-            numbers_god_number=userSetting["question_stats"]
-            countAns =userSetting["questions_per_session"]
+            #question_stats - список вопросов на которые успешно ответили
+            #questions_per_session - кол-во вопросов провекрки за секцию
+            #numbers_god_number=userSetting["question_stats"]
+            try:
+                #необходимо указать путь в хранилице где будут храниться пройденные вопросы 
+                numbers_god_number=userSetting["question_stats"] 
+            except KeyError as e:
+                #Если нет такой секции то считаем что это первый запуск этого теста
+                numbers_god_number=[]
+            
+            
+            countAns =userSetting["questions_per_session"] #кол-во вопросв при тестировании
             ans = Testing(numbers_god_number) #Передаем номера вопросов  
 
             # Цикл вопросов от 0 до максимального кол-ва вопрсосов за секцию
             for ask in range(countAns):
                 #генерируем случайное число из избранного списка за исключением вопросов на которые ранее были получены положительные ответы  
                 answers_number = ans.rand_ans()
-                    
-                question = db.get_question(answers_number) #достаем Заданный вопрос
+
+                #достаем Заданный вопрос    
+                question = db.get_question(answers_number) 
                 if question:
                     current_question_text = f"Вопрос {ask + 1}/{countAns}"
                     # обновляем экран с вопросом
@@ -164,6 +174,7 @@ class Application:
         # Проверка что файл существует
         if nameDb is not None:
             db = self.loadDB(nameDb)
+            self.selected_test=nameDb # сохраняем выбранную тему в переменные класса  
         else:
             self.ui.error("База не найдена")   
             raise SystemExit

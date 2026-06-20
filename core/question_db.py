@@ -50,7 +50,7 @@ class QuestionDB:
             self.questions = json.load(f)
 
     def get_question(self, question_id):
-        for q in self.questions:
+        for q in self.questions["questions"]:
             if q["id"]==question_id:
                 return Question_v2(q)
         return None
