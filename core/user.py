@@ -69,22 +69,27 @@ class User:
             file_path.parent.mkdir(parents=True, exist_ok=True)
             with open(file_path,"r",encoding="utf-8") as file:
                 user_data = json.load(file)
+            #print(type(user_data))
+            #print(type(correct_questions))
             #Ищем ключь равный имени файла теста
             if db in user_data:
                 #Если найден то добавляем в [ключ][ключ] список правильных ответов
                 ...
+                # Добавляем новые вопросы, избегая дубликатов
+                current_questions = set(user_data["question_stats"])
+                for qid in correct_questions:
+                    current_questions.add(qid)
+                user_data["question_stats"]=sorted(list(current_questions))
+
             else:
-                #Если не найден, то добавляем всю секцию
-                ...
+                #Если ключ не найден, то добавляем всю секцию
+                user_data["topics"]["electrical"]={
+                    "questions_per_session": 10,
+                    "question_stats": correct_questions
+                }
             
-            # Добавляем новые вопросы, избегая дубликатов
-            current_questions = set(user_data["question_stats"])
-
-            for qid in correct_questions:
-                current_questions.add(qid)
+            print(user_data)    
             
-            user_data["question_stats"]=sorted(list(current_questions))
-
             with open(file_path, "w", encoding="utf-8") as file:
                 json.dump(
                     user_data,

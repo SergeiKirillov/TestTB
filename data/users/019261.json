@@ -5,5 +5,21 @@
     "total_correct": 0,
     "total_wrong": 0,
     "questions_per_session": 10,
-    "topics": {}
+    "topics": {
+        "electrical": {
+            "questions_per_session": 10,
+            "question_stats": [
+                37,
+                33,
+                29,
+                183,
+                148,
+                76,
+                64,
+                117,
+                99,
+                160
+            ]
+        }
+    }
 }
