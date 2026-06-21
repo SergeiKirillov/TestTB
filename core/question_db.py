@@ -18,10 +18,11 @@ class Question_v2:
         #print()
 
         #return (f"\nВопрос №{self.id}\n{self.question}\n")
-        que_show = f"\nВопрос №{self.id} \n {self.question} \n"
+        #que_show  = f"\nВопрос №{self.id} \n {self.question} \n"
+        que_show=""
 
         for i, answer in enumerate(self.answers, start=1):
-            que_show = que_show + f"\n{i}. {answer['text']}"
+            que_show = que_show + f"{i}. {answer['text']}\n"
 
         return que_show
 

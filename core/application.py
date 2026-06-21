@@ -84,15 +84,27 @@ class Application:
 
                 #достаем Заданный вопрос    
                 question = db.get_question(answers_number) 
+                
+                #print(type(question))
                 if question:
-                    current_question_text = f"Вопрос {ask + 1}/{countAns}"
-                    # обновляем экран с вопросом
-                    self.ui.show_question(current_question_text)
-                    self.ui.show_question(question.show())
+                    #current_question_text = f"Вопрос {ask + 1}/{countAns}"
+                    ## обновляем экран с вопросом
+                    #self.ui.show_question(current_question_text)
+                    #self.ui.show_question(question.show())
                     
-                    #отвечаем на вопрос и проверяем ответ                       
-                    quest_number_user = int(self.ui.ask_input("\nВведите правильный ответ "))
-                          
+                    #self.ui.show_message(question.id)
+                    #self.ui.show_message(question.question)
+                    #self.ui.show_message(question.answers)
+                    
+                    question_id = question.id
+                    question_text=question.question
+                    #answers=question.show() #возвращает строку
+                    answers=question.answers
+                    #print(answers)
+                    quest_number_user=self.ui.show_question(ask, countAns, question_id, question_text, answers)
+
+                   
+                                             
                     if question.check_answer(quest_number_user):
                         #если ответ правильный
                         self.ui.success("Правильно")

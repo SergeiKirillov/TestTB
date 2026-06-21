@@ -13,7 +13,7 @@ class BaseUI(ABC):
         pass
 
     @abstractmethod
-    def show_question(self, question):
+    def show_question(self, question_num, total_questions, question_id, question_text, answers):
         pass
 
     @abstractmethod

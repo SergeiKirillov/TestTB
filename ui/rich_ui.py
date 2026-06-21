@@ -4,6 +4,7 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.align import Align
+from rich.rule import Rule
 
 class RichUI(BaseUI):
     def __init__(self):
@@ -54,7 +55,7 @@ class RichUI(BaseUI):
                     )
                 )
 
-                if 1 <= choice <= len(options):
+                if 0 <= choice <= len(options):
                     return choice
 
                 self.console.print(
@@ -73,8 +74,42 @@ class RichUI(BaseUI):
         self.console.clear()
         return self.console.input(text)
 
-    def show_question(self, question):
-        self.console.print(question)
+    #def show_question(self, question):
+    #    self.console.print(question)
+
+    def show_question(self, question_num, total_questions, question_id, question_text, answers):    
+    #    self.console.print(f"Вопрос {question_id}({question_num + 1}/{total_questions})")
+    #    self.console.print(question_text)
+    #    self.console.print(answers)
+        self.clear
+
+        self.console.print(
+            Rule(
+                f"[bold cyan]Вопрос{question_id}({question_num}/{total_questions})[/bold cyan]"
+            )
+           
+        )
+        self.console.print(
+            Panel(
+                question_text,
+                title="❓ Вопрос",
+                border_style="cyan"
+            )
+        )
+
+        for i, answer in enumerate(answers, start=1):
+            self.console.print(
+                Panel(
+                    answer["text"],
+                    title=f"[yellow]{i}[/yellow]",
+                    border_style="green",
+                    padding=(0, 1)
+                )
+            )
+        self.console.print()
+        return int(self.console.input("[bold cyan]Ваш ответ: [/bold cyan]"))
+    
+
 
     def success(self, text):
         self.console.print(f"[green]✓ {text}[/green]")
