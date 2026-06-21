@@ -15,7 +15,7 @@ class Application:
             from ui.terminal_ui import TerminalUI
             self.ui = TerminalUI()
         self.current_user = None
-        self.fileJSONdescript = None
+        self.fileJSONdescript = None #Имя теста для вывода на экран
         self.selected_test=None  #имя файла выбранных тестов
         
         
@@ -54,17 +54,24 @@ class Application:
             selDB = Path("data")/ "tests" / f"{self.selected_test}.json"
             db=QuestionDB(selDB)
             
-            numbers_god_number=[]
+            
             number_god_session=[]
-            #question_stats - список вопросов на которые успешно ответили
+            #question_stats - ключ словаря где храниться список вопросов на которые успешно ответили
             #questions_per_session - кол-во вопросов провекрки за секцию
+            #numbers_god_number - переменная в которую мы передаём список вопросов 
             #numbers_god_number=userSetting["question_stats"]
-            try:
+            numbers_god_number=[]
+            if self.selected_test in userSetting["topics"]:
+               # print(userSetting)
+                numbers_god_number=userSetting["topics"][self.selected_test]["question_stats"]
+            
+
+            #try:
                 #необходимо указать путь в хранилице где будут храниться пройденные вопросы 
-                numbers_god_number=userSetting["question_stats"] 
-            except KeyError as e:
+                #numbers_god_number=userSetting["question_stats"] 
+            #except KeyError as e:
                 #Если нет такой секции то считаем что это первый запуск этого теста
-                numbers_god_number=[]
+            #    numbers_god_number=[]
             
             
             countAns =userSetting["questions_per_session"] #кол-во вопросв при тестировании
@@ -102,6 +109,8 @@ class Application:
             self.ui.show_message(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
             full_ans=number_god_session
             user.save_user(self.selected_test,full_ans)
+
+
             self.ui.pause()
         
 

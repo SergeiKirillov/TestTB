@@ -72,23 +72,25 @@ class User:
             #print(type(user_data))
             #print(type(correct_questions))
             #Ищем ключь равный имени файла теста
-            if db in user_data:
+            if db in user_data['topics']:
                 #Если найден то добавляем в [ключ][ключ] список правильных ответов
                 ...
                 # Добавляем новые вопросы, избегая дубликатов
-                current_questions = set(user_data["question_stats"])
+                current_questions = set(user_data['topics'][db]['question_stats'])
                 for qid in correct_questions:
                     current_questions.add(qid)
                 user_data["question_stats"]=sorted(list(current_questions))
 
             else:
+                #сортируем по возрастанию
+                correct_questions_sorted = sorted(list(correct_questions))
                 #Если ключ не найден, то добавляем всю секцию
-                user_data["topics"]["electrical"]={
+                user_data["topics"][db]={
                     "questions_per_session": 10,
-                    "question_stats": correct_questions
-                }
+                    "question_stats": correct_questions_sorted
+                }   
             
-            print(user_data)    
+            #print(user_data)    
             
             with open(file_path, "w", encoding="utf-8") as file:
                 json.dump(
