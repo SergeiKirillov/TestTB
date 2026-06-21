@@ -79,7 +79,7 @@ class User:
                 current_questions = set(user_data['topics'][db]['question_stats'])
                 for qid in correct_questions:
                     current_questions.add(qid)
-                user_data["question_stats"]=sorted(list(current_questions))
+                user_data['topics'][db]["question_stats"]=sorted(list(current_questions))
 
             else:
                 #сортируем по возрастанию
