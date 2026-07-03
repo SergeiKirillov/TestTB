@@ -26,13 +26,14 @@ def main():
     #Создаём Session один раз
     session = Session()
 
-    if args.ui=="rich" or args.ui=="terminal":
+    if (args.ui=="rich" or args.ui=="terminal"):
         #from ui.terminal_ui import TerminalUI
         #from ui.rich_ui import RichUI
         from core.application import Application
-        app = Application(session, ui_type = args.ui , theme=args.theme)
+        #app = Application(session, ui_type = args.ui , theme=args.theme)
         #app().selectDB()
-        app.run("electrical")
+        #app.run("electrical")
+        Application(session, ui_type = args.ui , theme=args.theme).selectDB()
     else:
         import os
         os.environ["KIVY_NO_ARGS"] = "1"
