@@ -6,7 +6,7 @@ def parse_args():
         description="Система проверки знаний"
     )
     parser.add_argument(
-        "--ui", 
+        "--ui",
         choices=["terminal", "rich", "kivy"], 
         default="terminal",
         help="Тип интерфейса"
