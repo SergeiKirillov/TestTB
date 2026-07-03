@@ -6,7 +6,7 @@ from pathlib import Path
 
 class Application:
 
-    def __init__(self, ui_type="terminal", theme=None):
+    def __init__(self, session, ui_type="terminal", theme=None):
         self.theme=theme
         if ui_type == "rich":
             from ui.rich_ui import RichUI

@@ -1,7 +1,5 @@
 import argparse
-from core.application import Application
-from ui.terminal_ui import TerminalUI
-from ui.rich_ui import RichUI
+from data.config.session import Session
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -9,7 +7,7 @@ def parse_args():
     )
     parser.add_argument(
         "--ui", 
-        choices=["terminal", "rich"], 
+        choices=["terminal", "rich", "kivy"], 
         default="terminal",
         help="Тип интерфейса"
     )
@@ -18,16 +16,31 @@ def parse_args():
         default=None,
         help="Тема вопросов"
     )
+    
+
     return parser.parse_args()
 
+def main():
+    args = parse_args()
+    
+    #Создаём Session один раз
+    session = Session()
+
+    if args.ui=="rich" or args.ui=="terminal":
+        #from ui.terminal_ui import TerminalUI
+        #from ui.rich_ui import RichUI
+        from core.application import Application
+        app = Application(session, ui_type = args.ui , theme=args.theme)
+        #app().selectDB()
+        app.run("electrical")
+    else:
+        import os
+        os.environ["KIVY_NO_ARGS"] = "1"
+        from ui.ScreenManager import MyApp
+        MyApp(session).run()
+        
 
 if __name__=="__main__":
-    args = parse_args()
-   
-    app = Application(ui_type = args.ui , theme=args.theme)
-    if args.theme is None:
-        app.selectDB()
-    else:
-        app.run("electrical")
+    main()    
     
 
