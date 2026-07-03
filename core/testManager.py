@@ -13,7 +13,7 @@ class TestManager:
     def get_tests_names(self):
         return[f.stem for f in self.get_tests()]
     
-    def load_test(self, test_name):
-        filename = self.tests_dir / f"{test_name}.json"
+    def load_test(self):
+        filename = self.tests_dir / f"{self.session.theme}.json"
         with open(filename, "r", encoding="utf-8") as f:
             return json.load(f)

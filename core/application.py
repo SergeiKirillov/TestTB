@@ -24,20 +24,20 @@ class Application:
         
 
     def login(self):
-        self.current_user=self.ui.ask_input("Введите имя пользователя > ")
+        self.session.user=self.ui.ask_input("Введите имя пользователя > ")
         # print(self.current_user)
-        userSetting = User(self.current_user)
+        userSetting = User(self.session)
         count_quest = userSetting.LoadUser()
         if count_quest is None:
             self.ui.show_message("Нет такого пользователя. Зарегистрируйтесь")
-            self.current_user = None
+            #self.current_user = None
         else:
             self.ui.show_message(count_quest["questions_per_session"])
         
     def registration(self):
         try:
-            self.current_user = self.ui.ask_input("Введите имя нового пользователя > ")
-            newUser = User(self.current_user)
+            self.session.user = self.ui.ask_input("Введите имя нового пользователя > ")
+            newUser = User(self.session)
             newUser.createUser()
         except Exception as e:
             raise e
@@ -46,7 +46,7 @@ class Application:
         
     def testing(self):
         # Загружаем настройки пользователя  
-        user = User(self.current_user)
+        user = User(self.session)
         userSetting = user.LoadUser()
 
         #Если настроек нет то выходим  
@@ -54,7 +54,8 @@ class Application:
             raise SystemExit
         else:
             #Загружаем вопросы
-            selDB = Path("data")/ "tests" / f"{self.selected_test}.json"
+            #selDB = Path("data")/ "tests" / f"{self.selected_test}.json"
+            selDB = Path("data")/ "tests" / f"{self.session.theme}.json"
             db=QuestionDB(selDB)
             
             
@@ -64,9 +65,9 @@ class Application:
             #numbers_god_number - переменная в которую мы передаём список вопросов 
             #numbers_god_number=userSetting["question_stats"]
             numbers_god_number=[]
-            if self.selected_test in userSetting["topics"]:
+            if self.session.theme in userSetting["topics"]:
                # print(userSetting)
-                numbers_god_number=userSetting["topics"][self.selected_test]["question_stats"]
+                numbers_god_number=userSetting["topics"][self.session.theme]["question_stats"]
             
 
             #try:
@@ -123,7 +124,7 @@ class Application:
 
             self.ui.show_message(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
             full_ans=number_god_session
-            user.save_user(self.selected_test,full_ans)
+            user.save_user(self.session,full_ans)
 
 
             self.ui.pause()
@@ -156,7 +157,7 @@ class Application:
     
     def user_menu(self):
         choice = self.ui.show_menu(
-                    f"Выбран пользователь: {self.current_user}",
+                    f"Выбран пользователь: {self.session.user}",
                     [
                         "Выход",
                         "Тестирование",
@@ -185,31 +186,32 @@ class Application:
         self.session.theme = tests[choice]
         
         #self.run(self.selected_test)
-        self.run(self.session.theme)
+        self.run()
 
-    def loadDB(self,SelectTest):
+    def loadDB(self):
         try:
-            manager = TestManager()
-            selectDBload = manager.load_test(SelectTest)
-            self.fileJSONdescript=selectDBload["title"]
+            manager = TestManager(self.session)
+            selectDBload = manager.load_test()
+            self.session.topic = selectDBload["title"]
             return selectDBload
         except Exception as e:
             raise e
         
     
 
-    def run(self, nameDb:str):
+    def run(self):
         # Проверка что файл существует
-        if nameDb is not None:
-            db = self.loadDB(nameDb)
-            self.selected_test=nameDb # сохраняем выбранную тему в переменные класса  
+        if self.session.theme is not None:
+            db = self.loadDB()
+#            self.selected_test=nameDb # сохраняем выбранную тему в переменные класса  
         else:
             self.ui.error("База не найдена")   
             raise SystemExit
 
-        self.ui.show_message(db["title"])
+#            self.ui.show_message(db["title"])
+        self.ui.show_message(self.session.topic)
         while True:
-            if self.current_user is None:
+            if self.session.user is None:
                 self.guest_menu()
             else:
                 self.user_menu()
