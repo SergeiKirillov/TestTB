@@ -6,17 +6,20 @@ from pathlib import Path
 
 class Application:
 
-    def __init__(self, session, ui_type="terminal", theme=None):
-        self.theme=theme
-        if ui_type == "rich":
+    #def __init__(self, session, ui_type="terminal", theme=None):
+    def __init__(self, session):
+        self.session = session
+        
+        if self.session.ui == "rich":
             from ui.rich_ui import RichUI
             self.ui = RichUI()
         else:
             from ui.terminal_ui import TerminalUI
             self.ui = TerminalUI()
-        self.current_user = None
-        self.fileJSONdescript = None #Имя теста для вывода на экран
-        self.selected_test=None  #имя файла выбранных тестов
+        
+        #self.current_user = None
+        #self.fileJSONdescript = None #Имя теста для вывода на экран
+        #self.selected_test=None  #имя файла выбранных тестов
         
         
 
@@ -175,11 +178,14 @@ class Application:
                 raise SystemExit
 
     def selectDB(self):
-        manager = TestManager()
+        manager = TestManager(self.session)
         tests = manager.get_tests_names()
         choice = self.ui.show_menu("Выбор тестов",tests)
-        self.selected_test = tests[choice]
-        self.run(self.selected_test)
+        #self.selected_test = 
+        self.session.theme = tests[choice]
+        
+        #self.run(self.selected_test)
+        self.run(self.session.theme)
 
     def loadDB(self,SelectTest):
         try:

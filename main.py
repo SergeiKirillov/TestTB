@@ -16,8 +16,6 @@ def parse_args():
         default=None,
         help="Тема вопросов"
     )
-    
-
     return parser.parse_args()
 
 def main():
@@ -33,7 +31,11 @@ def main():
         #app = Application(session, ui_type = args.ui , theme=args.theme)
         #app().selectDB()
         #app.run("electrical")
-        Application(session, ui_type = args.ui , theme=args.theme).selectDB()
+        #Application(session, ui_type = args.ui , theme=args.theme).selectDB()
+        session.theme=args.theme #используем сессию
+        session.ui=args.ui #используем сессию
+        Application(session).selectDB()
+        
     else:
         import os
         os.environ["KIVY_NO_ARGS"] = "1"

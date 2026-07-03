@@ -1,8 +1,10 @@
 from pathlib import Path
 import json
+from data.config.session import Session
 
 class TestManager:
-    def __init__(self):
+    def __init__(self, session):
+        self.session=session
         self.tests_dir = Path("data/tests")
     
     def get_tests(self):
