@@ -25,8 +25,13 @@ class MainScreen(BaseScreen):
         blMainCenter = BoxLayout(orientation="vertical", padding=dp(10), spacing=dp(10))
 
         blMainTitle.add_widget(Label(text="Главный экран", color="yellow", font_size=Constants.HEADER_HEIGHT*0.5))
-        txtLoginName=TextInput(text="Введите табельный номер, и нажмите Enter", size_hint=(None, None), size=(500, 30))
-        #TODO: добавить обработку нажатия Enter в TextInput
+        txtLoginName=TextInput(_hint_text="Введите табельный номер, и нажмите Enter", size_hint=(None, None), size=(500, 30),multiline=False)
+        txtLoginName.input_filter = "int"  # Ограничение ввода только цифрами
+        txtLoginName.bind(on_text_validate=self.on_enter_pressed)
+        txtLoginName.bind(text=self.limit_length)  # Ограничение длины ввода
+        #
+
+       
         #btnLoginName=Button(text="Войти",size_hint=(None, None),size=(200,25))    
         blMainCenter.add_widget(Widget())  # Добавляем пустой виджет для отступа
         blMainCenter.add_widget(txtLoginName)
@@ -54,6 +59,7 @@ class MainScreen(BaseScreen):
 
         self.add_widget(blMain)
 
+
     def change_screen(self, screen):
         if screen=="exit":
             App.get_running_app().stop()
@@ -64,6 +70,17 @@ class MainScreen(BaseScreen):
 #    def btn_click(self, instance):  
 #        #print(self.manager.current)
 #        self.manager.current = "theme"
+
+#TODO: добавить обработку нажатия Enter в TextInput
+    def on_enter_pressed(self, instance):
+        self.session.user=instance.text
+        self.change_screen("theme")  # Переход на экран выбора темы
+
+#TODO:ограничение кол-ва вводимых знаков
+    def limit_length(self, instance, value):
+        max_length = 8  # Максимальная длина ввода
+        if len(value) > max_length:
+            instance.text = value[:max_length]
 
 
 
