@@ -25,13 +25,16 @@ if platform in ("win", "linux"):
 #TODO главное окно
 
 class MyApp(App):
-    def __init__(self,session,**kwargs):
+#    def __init__(self,session,**kwargs):
+#        super().__init__(**kwargs)
+#        self.session=session
+    def __init__(self,context,**kwargs):
         super().__init__(**kwargs)
-        self.session=session
+        self.context=context
     
     def build(self):
         sc=ScreenManager()
-        #self.session=Session()
+       
 
         sc.add_widget(MainScreen(name="main"))
         sc.add_widget(Theme(name="theme"))

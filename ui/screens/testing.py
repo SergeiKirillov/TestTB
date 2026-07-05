@@ -40,5 +40,5 @@ class Testing(BaseScreen):
     def on_enter(self):   #событие при открывании экрана,интерфейс ещё старый
         #self.lblTitle.text=self.test_name #Изменяем значение текстового поля.
         #self.lblTitle.text=self.data["topic"]
-        txt1=self.session.topic
-        self.lblTitle.text=txt1
+        txtTitle=self.session.topic
+        self.lblTitle.text=txtTitle

@@ -1,5 +1,5 @@
 import argparse
-from data.config.session import Session
+#from data.config.session import Session
 from data.ApplicationContext import ApplicationContext
 
 def parse_args():
@@ -41,8 +41,8 @@ def main():
         import os
         os.environ["KIVY_NO_ARGS"] = "1"
         from ui.ScreenManager import MyApp
-        MyApp(session).run()
-        #MyApp().run()
+        #MyApp(session).run() #Session передаём через контекст
+        MyApp(app_context).run() #Session передаём через контекст
 
 if __name__=="__main__":
     main()    
