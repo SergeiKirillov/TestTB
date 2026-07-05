@@ -7,10 +7,10 @@ from pathlib import Path
 class Application:
 
     #def __init__(self, session, ui_type="terminal", theme=None):
-    def __init__(self, session):
-        self.session = session
+    def __init__(self, context):
+        self.context = context
         
-        if self.session.ui == "rich":
+        if self.context.session.ui == "rich":
             from ui.rich_ui import RichUI
             self.ui = RichUI()
         else:
@@ -24,9 +24,9 @@ class Application:
         
 
     def login(self):
-        self.session.user=self.ui.ask_input("Введите имя пользователя > ")
+        self.context.session.user=self.ui.ask_input("Введите имя пользователя > ")
         # print(self.current_user)
-        userSetting = User(self.session)
+        userSetting = User(self.context)
         count_quest = userSetting.LoadUser()
         if count_quest is None:
             self.ui.show_message("Нет такого пользователя. Зарегистрируйтесь")
@@ -37,7 +37,7 @@ class Application:
     def registration(self):
         try:
             self.session.user = self.ui.ask_input("Введите имя нового пользователя > ")
-            newUser = User(self.session)
+            newUser = User(self.context)
             newUser.createUser()
         except Exception as e:
             raise e
@@ -46,7 +46,7 @@ class Application:
         
     def testing(self):
         # Загружаем настройки пользователя  
-        user = User(self.session)
+        user = User(self.context)
         userSetting = user.LoadUser()
 
         #Если настроек нет то выходим  
@@ -55,7 +55,7 @@ class Application:
         else:
             #Загружаем вопросы
             #selDB = Path("data")/ "tests" / f"{self.selected_test}.json"
-            selDB = Path("data")/ "tests" / f"{self.session.theme}.json"
+            selDB = Path("data")/ "tests" / f"{self.context.session.theme}.json"
             db=QuestionDB(selDB)
             
             
@@ -65,9 +65,9 @@ class Application:
             #numbers_god_number - переменная в которую мы передаём список вопросов 
             #numbers_god_number=userSetting["question_stats"]
             numbers_god_number=[]
-            if self.session.theme in userSetting["topics"]:
+            if self.context.session.theme in userSetting["topics"]:
                # print(userSetting)
-                numbers_god_number=userSetting["topics"][self.session.theme]["question_stats"]
+                numbers_god_number=userSetting["topics"][self.context.session.theme]["question_stats"]
             
 
             #try:
@@ -124,7 +124,7 @@ class Application:
 
             self.ui.show_message(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
             full_ans=number_god_session
-            user.save_user(self.session,full_ans)
+            user.save_user(self.context,full_ans)
 
 
             self.ui.pause()
@@ -157,7 +157,7 @@ class Application:
     
     def user_menu(self):
         choice = self.ui.show_menu(
-                    f"Выбран пользователь: {self.session.user}",
+                    f"Выбран пользователь: {self.context.session.user}",
                     [
                         "Выход",
                         "Тестирование",
@@ -179,20 +179,20 @@ class Application:
                 raise SystemExit
 
     def selectDB(self):
-        manager = TestManager(self.session)
+        manager = TestManager(self.context)
         tests = manager.get_tests_names()
         choice = self.ui.show_menu("Выбор тестов",tests)
         #self.selected_test = 
-        self.session.theme = tests[choice]
+        self.context.session.theme = tests[choice]
         
         #self.run(self.selected_test)
         self.run()
 
     def loadDB(self):
         try:
-            manager = TestManager(self.session)
+            manager = TestManager(self.context)
             selectDBload = manager.load_test()
-            self.session.topic = selectDBload["title"]
+            self.context.session.topic = selectDBload["title"]
             return selectDBload
         except Exception as e:
             raise e
@@ -201,7 +201,7 @@ class Application:
 
     def run(self):
         # Проверка что файл существует
-        if self.session.theme is not None:
+        if self.context.session.theme is not None:
             db = self.loadDB()
 #            self.selected_test=nameDb # сохраняем выбранную тему в переменные класса  
         else:
@@ -209,9 +209,9 @@ class Application:
             raise SystemExit
 
 #            self.ui.show_message(db["title"])
-        self.ui.show_message(self.session.topic)
+        self.ui.show_message(self.context.session.topic)
         while True:
-            if self.session.user is None:
+            if self.context.session.user is None:
                 self.guest_menu()
             else:
                 self.user_menu()

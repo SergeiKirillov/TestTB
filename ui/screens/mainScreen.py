@@ -12,10 +12,13 @@ from kivy.metrics import dp, sp
 from data.config.constants import Constants
 from ui.screens.base_screen import BaseScreen
 
+
 class MainScreen(BaseScreen):
     
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
+        #self.context=context
         blMain = BoxLayout(orientation="vertical", padding=dp(10), spacing=dp(10))
         blMainTitle = BoxLayout(orientation="horizontal", padding=dp(10), spacing=dp(10))
         blMainContent = BoxLayout(orientation="horizontal", padding=dp(10), spacing=dp(10))
@@ -29,8 +32,7 @@ class MainScreen(BaseScreen):
         txtLoginName.input_filter = "int"  # Ограничение ввода только цифрами
         txtLoginName.bind(on_text_validate=self.on_enter_pressed)
         txtLoginName.bind(text=self.limit_length)  # Ограничение длины ввода
-        #
-
+        
        
         #btnLoginName=Button(text="Войти",size_hint=(None, None),size=(200,25))    
         blMainCenter.add_widget(Widget())  # Добавляем пустой виджет для отступа
@@ -55,7 +57,7 @@ class MainScreen(BaseScreen):
         #blMain.add_widget(btnTheme)
         #blMain.add_widget(navigatorMenu(self.change_screen))
 
-        self.session.user="019261"
+        #self.session.user="019261"
 
         self.add_widget(blMain)
 

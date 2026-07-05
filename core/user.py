@@ -1,11 +1,11 @@
 import json
 from pathlib import Path
 from rich import print 
-from data.config.session import Session
+#from data.config.session import Session
 
 class User:
-    def __init__(self, session):
-        self.name = session.user
+    def __init__(self, context):
+        self.name = context.session.user
     
     def LoadUser(self):
         try:
@@ -54,7 +54,7 @@ class User:
         except Exception as e:
             raise e
         
-    def save_user(self, session, correct_questions):
+    def save_user(self, context, correct_questions):
         """
         name - имя пользователя
 
@@ -67,7 +67,7 @@ class User:
             
             #file_name = "data/users/"+ self.name +".json"
             #with open(file_name,"r", encoding="utf-8") as file:
-            file_path = Path("data")/ "users" / f"{session.user}.json"
+            file_path = Path("data")/ "users" / f"{context.session.user}.json"
             file_path.parent.mkdir(parents=True, exist_ok=True)
             with open(file_path,"r",encoding="utf-8") as file:
                 user_data = json.load(file)
@@ -75,20 +75,20 @@ class User:
             #print(type(correct_questions))
             #Ищем ключь равный имени файла теста
             
-            if session.theme in user_data['topics']:
+            if context.session.theme in user_data['topics']:
                 #Если найден то добавляем в [ключ][ключ] список правильных ответов
                 ...
                 # Добавляем новые вопросы, избегая дубликатов
-                current_questions = set(user_data['topics'][session.theme]['question_stats'])
+                current_questions = set(user_data['topics'][context.session.theme]['question_stats'])
                 for qid in correct_questions:
                     current_questions.add(qid)
-                user_data['topics'][session.theme]["question_stats"]=sorted(list(current_questions))
+                user_data['topics'][context.session.theme]["question_stats"]=sorted(list(current_questions))
 
             else:
                 #сортируем по возрастанию
                 correct_questions_sorted = sorted(list(correct_questions))
                 #Если ключ не найден, то добавляем всю секцию
-                user_data["topics"][session.theme]={
+                user_data["topics"][context.session.theme]={
                     "questions_per_session": 10,
                     "question_stats": correct_questions_sorted
                 }   

@@ -56,14 +56,14 @@ class Theme(BaseScreen):
     def btnThemeSelect_click(self, instance):
         if instance.id=="electr":
             screen=self.manager.get_screen("testing") #Получаем доступ к экрану
-            screen.test_name="Электробезопастность"   #Присваиваем переменной этого экрана значение 
-            screen.data={"topic":"Электробезопастность","questions":10,"user":"019261"}
+            #screen.test_name="Электробезопастность"   #Присваиваем переменной этого экрана значение 
+            #screen.data={"topic":"Электробезопастность","questions":10,"user":"019261"}
             self.session.topic="Электробезопастность"
             self.session.theme="electr"
         elif instance.id=="Prombez":
             screen=self.manager.get_screen("testing")
-            screen.test_name="Промбезопастность"
-            screen.data={"topic":"Промбезопастность","questions":10,"user":"019261"}
+            #screen.test_name="Промбезопастность"
+            #screen.data={"topic":"Промбезопастность","questions":10,"user":"019261"}
             self.session.topic="Промбезопастность"
             self.session.theme="Prombez"
         self.manager.current="testing"            #Отображаем экран    

@@ -1,10 +1,10 @@
 from pathlib import Path
 import json
-from data.config.session import Session
+#from data.config.session import Session
 
 class TestManager:
-    def __init__(self, session):
-        self.session=session
+    def __init__(self, context):
+        self.context = context
         self.tests_dir = Path("data/tests")
     
     def get_tests(self):
@@ -14,6 +14,6 @@ class TestManager:
         return[f.stem for f in self.get_tests()]
     
     def load_test(self):
-        filename = self.tests_dir / f"{self.session.theme}.json"
+        filename = self.tests_dir / f"{self.context.session.theme}.json"
         with open(filename, "r", encoding="utf-8") as f:
             return json.load(f)

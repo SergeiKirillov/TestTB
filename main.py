@@ -1,5 +1,6 @@
 import argparse
 from data.config.session import Session
+from data.ApplicationContext import ApplicationContext
 
 def parse_args():
     parser = argparse.ArgumentParser(
@@ -23,6 +24,7 @@ def main():
     
     #Создаём Session один раз
     session = Session()
+    app_context = ApplicationContext()
 
     if (args.ui=="rich" or args.ui=="terminal"):
         #from ui.terminal_ui import TerminalUI
@@ -32,16 +34,15 @@ def main():
         #app().selectDB()
         #app.run("electrical")
         #Application(session, ui_type = args.ui , theme=args.theme).selectDB()
-        session.theme=args.theme #используем сессию
-        session.ui=args.ui #используем сессию
-        Application(session).selectDB()
-        
-    else:
+        app_context.session.theme=args.theme #используем сессию
+        app_context.session.ui=args.ui #используем сессию
+        Application(app_context).selectDB()    
+    elif args.ui=="kivy":
         import os
         os.environ["KIVY_NO_ARGS"] = "1"
         from ui.ScreenManager import MyApp
         MyApp(session).run()
-        
+        #MyApp().run()
 
 if __name__=="__main__":
     main()    

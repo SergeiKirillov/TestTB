@@ -16,6 +16,7 @@ from data.config.constants import Constants
 
 
 
+
 if platform in ("win", "linux"):
     Window.minimum_width = Constants.WINDOW_MIN_WIDTH
     Window.minimum_height = Constants.WINDOW_MIN_HEIGHT
@@ -24,7 +25,7 @@ if platform in ("win", "linux"):
 #TODO главное окно
 
 class MyApp(App):
-    def __init__(self, session, **kwargs):
+    def __init__(self,session,**kwargs):
         super().__init__(**kwargs)
         self.session=session
     
