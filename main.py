@@ -23,7 +23,7 @@ def main():
     args = parse_args()
     
     #Создаём Session один раз
-    session = Session()
+    #session = Session()
     app_context = ApplicationContext()
 
     if (args.ui=="rich" or args.ui=="terminal"):
