@@ -4,6 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 from kivy.uix.textinput import TextInput
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from ui.screens.setting import Setting
 from ui.screens.theme import Theme
@@ -19,14 +20,16 @@ class MainScreen(BaseScreen):
         super().__init__(**kwargs)
 
         self.title.add_widget(
-            Label(text="Главное меню", color="yellow", font_size=Constants.HEADER_HEIGHT*0.5)
+            Label(text="Программа для проверки знаний", color="yellow", font_size=Constants.HEADER_HEIGHT*0.5)
         )
         
         txtLoginName=TextInput(_hint_text="Введите табельный номер, и нажмите Enter", size_hint=(None, None), size=(500, 30),multiline=False)
         txtLoginName.input_filter = "int"  # Ограничение ввода только цифрами
         txtLoginName.bind(on_text_validate=self.on_enter_pressed)
         txtLoginName.bind(text=self.limit_length)  # Ограничение длины ввода
-        self.content.add_widget(txtLoginName)
+        contentCenterAnchor=AnchorLayout(anchor_x = "center",anchor_y = "center")
+        contentCenterAnchor.add_widget(txtLoginName)
+        self.contentCenter.add_widget(contentCenterAnchor)
         
 
 
@@ -81,12 +84,12 @@ class MainScreen(BaseScreen):
 #        #print(self.manager.current)
 #        self.manager.current = "theme"
 
-#TODO: добавить обработку нажатия Enter в TextInput
+#TODO: Обработку нажатия Enter в TextInput поля ввода табельного номера
     def on_enter_pressed(self, instance):
         self.session.user=instance.text
         self.change_screen("theme")  # Переход на экран выбора темы
 
-#TODO:ограничение кол-ва вводимых знаков
+#TODO:ограничение кол-ва вводимых знаков в проле ввода табельного номера
     def limit_length(self, instance, value):
         max_length = 8  # Максимальная длина ввода
         if len(value) > max_length:

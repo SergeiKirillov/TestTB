@@ -22,7 +22,7 @@ if platform in ("win", "linux"):
     Window.minimum_height = Constants.WINDOW_MIN_HEIGHT
     Window.resizable=True
 
-#TODO главное окно
+
 
 class MyApp(App):
 #    def __init__(self,session,**kwargs):

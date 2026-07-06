@@ -12,14 +12,21 @@ class BaseScreen(Screen):
         super().__init__(**kwargs)
 
         self.root_layout = BoxLayout(orientation="vertical")
+        
         #self.title = BoxLayout(orientation="horizontal", size_hint_y=None, height=50)
-        self.title = AnchorLayout()
-        self.title.anchor_x = "center"
-        self.title.anchor_y = "center"
-        self.title.size_hint_y=None
-        self.title.height=Constants.HEADER_HEIGHT
+        self.title = AnchorLayout(anchor_x = "center",anchor_y = "center",size_hint_y=None,height=Constants.HEADER_HEIGHT)
+        
+        #TODO: элемент Статус на базовом экране
         self.status = BoxLayout(orientation="horizontal", size_hint_y=None, height=30)
+        #TODO: Элемент основной контент на базовом экране
         self.content = BoxLayout()
+        self.contentRight=BoxLayout(orientation="vertical")
+        self.contentLeft=BoxLayout(orientation="vertical")
+        self.contentCenter=BoxLayout(orientation="vertical")
+        self.content.add_widget(self.contentLeft)
+        self.content.add_widget(self.contentCenter)
+        self.content.add_widget(self.contentRight)
+        #TODO: Элемент кнопки навигации на базовом экране
         self.navigation = navigatorMenu(self.change_screen)
         self.root_layout.add_widget(self.title)
         self.root_layout.add_widget(self.status)
