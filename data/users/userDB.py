@@ -6,8 +6,7 @@ from rich import print
 class UserDB:
     def __init__(self, login=""):
         self.name = login
-        self.total=0
-        self.tests=0
+        self.total_tests=0
         self.total_questions=0
         self.total_correct=0
         self.total_wrong=0
@@ -28,7 +27,7 @@ class UserDB:
     
     def to_dict(self):
         return {
-            "login": self.login,
+            "login": self.name,
             "total_tests": self.total_tests,
             "total_questions": self.total_questions,
             "total_correct": self.total_correct,
@@ -63,7 +62,7 @@ class UserDB:
             file_path.parent.mkdir(parents=True, exist_ok=True)
             with open(file_path,"w",encoding="utf-8") as file:
                 json.dump(
-                    self.to_dict,
+                    self.to_dict(),
                     file,
                     ensure_ascii=False,
                     indent=4

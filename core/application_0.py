@@ -44,33 +44,17 @@ class Application:
         except Exception as e:
             raise e
             self.ui.show_message(f"Ошибка. {e}")
-
-    def login(self):
-        user = self.context.database.load_user(self.ui.ask_input("Введите имя пользователя > "))
-
-        if user is not None:
-            #type(user)
-            #self.ui.show_message(user["questions_per_session"])
-            self.context.session.user=user["name"] 
-        else :
-            self.ui.show_message("Пользователя не существует")
-            self.registration()
-            
-
-
-    def registration(self):
-        data={"test":"a1"}
-        dataNewuser = self.context.database.save_user(self.ui.ask_input("Введите имя нового пользователя > "),data)
-        type(dataNewuser)
-
-        
                
     
-    def login2(self):
-        #self.context.session.user = self.ui.ask_input("Введите имя пользователя > ")
-        userSession = UserDB(self.context.session.user)
-        user = self.database.load_user(self.ui.ask_input("Введите имя пользователя > "))
-       #self.ui.show_message(userSession.LoadUser())
+    def login(self):
+        nameSession = self.ui.ask_input("Введите имя пользователя > ")
+        self.context.session.user=
+        #userSession = UserDB(nameSession)
+        #userSession=self.context.userdb(nameSession)
+
+        self.context.sess
+
+        #self.ui.show_message(userSession.LoadUser())
         if userSession.LoadUser()==1:
           self.ui.show_message("Пустое имя пользователя")
         elif userSession.LoadUser()==2:
@@ -83,7 +67,7 @@ class Application:
           pass
              
 
-    def registration1(self, name=""):
+    def registration(self, name=""):
         try:
             if name=="":
                 #Создание нового пользователя
