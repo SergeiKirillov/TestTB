@@ -24,7 +24,7 @@ class Application:
         
         
 
-    def login(self):
+    def login0(self):
         self.context.session.user=self.ui.ask_input("Введите имя пользователя > ")
         # print(self.current_user)
         userSetting = User(self.context)
@@ -34,12 +34,45 @@ class Application:
             #self.current_user = None
         else:
             self.ui.show_message(count_quest["questions_per_session"])
-        
-    def registration(self):
+
+    def registration0(self):
         try:
             self.session.user = self.ui.ask_input("Введите имя нового пользователя > ")
             newUser = User(self.context)
             newUser.createUser()
+        except Exception as e:
+            raise e
+            self.ui.show_message(f"Ошибка. {e}")
+               
+    
+    def login(self):
+        nameSession = self.ui.ask_input("Введите имя пользователя > ")
+        userSession = UserDB(nameSession)
+        #self.ui.show_message(userSession.LoadUser())
+        if userSession.LoadUser()==1:
+          self.ui.show_message("Пустое имя пользователя")
+        elif userSession.LoadUser()==2:
+          self.ui.show_message("Данные загружены")
+        elif userSession.LoadUser()==3:
+          self.ui.show_message("Пользователя не существует")
+          self.registration(userSession) 
+        else:
+          pass
+             
+
+    def registration(self, name=""):
+        try:
+            if name=="":
+                #Создание нового пользователя
+                newUser = self.ui.ask_input("Введите имя нового пользователя > ")
+            else:
+                newUserAns = self.ui.ask_input(f"Вы уверены что хотите зарегистрировать пользователя с именем {name} > ")
+                if newUserAns=="Y" or newUserAns=="y":
+                  newUser = name
+                else:
+                  exit()
+            newLogin = UserDB(newUser)
+            newLogin.createUser()
         except Exception as e:
             raise e
             self.ui.show_message(f"Ошибка. {e}")

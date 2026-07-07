@@ -13,28 +13,69 @@ class UserDB:
         self.total_wrong=0
         self.questions_per_session=10
         self.topics={}
+
+    @classmethod
+    def from_dict(cls, data):
+        userDB = cls()
+        userDB.name = data["name"]
+        userDB.total_tests = data["total_tests"]
+        userDB.total_questions = data["total_questions"]
+        userDB.total_correct = data["total_correct"]
+        userDB.total_wrong = data["total_wrong"]
+        userDB.questions_per_session=data["questions_per_session"]
+        userDB.topics=data["topics"]
+        return userDB
+    
+    def to_dict(self):
+        return {
+            "login": self.login,
+            "total_tests": self.total_tests,
+            "total_questions": self.total_questions,
+            "total_correct": self.total_correct,
+            "total_wrong": self.total_wrong,
+            "topics": self.topics
+        }
     
     def LoadUser(self):
         try:
             #TODO: Если пользователь имеет 0 имя то выход
-            #nameUser ="data/users/"+self.name+".json" 
-            file_path = Path("data")/ "users" / f"{self.name}.json"
-            file_path.parent.mkdir(parents=True, exist_ok=True)
-            with open(file_path,"r",encoding="utf-8") as f:
-                data = json.load(f)
-                return data
-        except FileNotFoundError:
-            #print("Пользователь не найден")
-            return None
+            if self.name=="":
+              return 1
+            else:
+                try:
+                    #TODO: Переменная  в имени пути  
+                    file_path = Path("data")/ "users" / f"{self.name}.json"
+                    file_path.parent.mkdir(parents=True, exist_ok=True)
+                    with open(file_path,"r",encoding="utf-8") as f:
+                        #data = json.load(f)
+                        self.from_dict(json.load(f))
+                        return 2
+                except FileNotFoundError:
+                    #Файл или директория не найдены
+                    return 3
         except Exception as e:
+            #TODO: Добавить запись ошибки в лог файл 
             raise e
-        else:
-            return False
-            pass
-
 
     def createUser(self):
         try:
+            file_path = Path("data")/ "users" / f"{self.name}.json"
+            file_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(file_path,"w",encoding="utf-8") as file:
+                json.dump(
+                    self.to_dict,
+                    file,
+                    ensure_ascii=False,
+                    indent=4
+                )
+        except Exception as e:
+            raise e
+            
+
+    def createUser0(self):
+        try:
+                
+
             user_data = {
                 "name": self.name,
                 "total_tests": 0,
