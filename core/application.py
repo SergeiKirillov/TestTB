@@ -1,4 +1,5 @@
-from core.user import User
+from data.users.user import User
+from data.users.userDB import UserDB
 from core.question_db import QuestionDB
 from core.testing import Testing
 from core.testManager import TestManager

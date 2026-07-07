@@ -22,6 +22,7 @@ def parse_args():
 def main():
     args = parse_args()
     
+    
     #Создаём Session один раз
     #session = Session()
     app_context = ApplicationContext()

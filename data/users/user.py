@@ -3,10 +3,12 @@ from pathlib import Path
 from rich import print 
 #from data.config.session import Session
 
+
 class User:
     def __init__(self, context):
         self.name = context.session.user
-    
+        self.context=context
+        
     def LoadUser(self):
         try:
             #nameUser ="data/users/"+self.name+".json" 
