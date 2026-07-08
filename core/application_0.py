@@ -48,7 +48,7 @@ class Application:
     
     def login(self):
         nameSession = self.ui.ask_input("Введите имя пользователя > ")
-        self.context.session.user=
+        #self.context.session.user=
         #userSession = UserDB(nameSession)
         #userSession=self.context.userdb(nameSession)
 

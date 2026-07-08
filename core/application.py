@@ -23,83 +23,53 @@ class Application:
         #self.fileJSONdescript = None #Имя теста для вывода на экран
         #self.selected_test=None  #имя файла выбранных тестов
         
-        
-
-    def login0(self):
-        self.context.session.user=self.ui.ask_input("Введите имя пользователя > ")
-        # print(self.current_user)
-        userSetting = User(self.context)
-        count_quest = userSetting.LoadUser()
-        if count_quest is None:
-            self.ui.show_message("Нет такого пользователя. Зарегистрируйтесь")
-            #self.current_user = None
+    
+    
+    def login(self, nameLog=""):
+        userText=""
+        if nameLog=="":
+            userL=(self.ui.ask_input("Введите имя пользователя > ")).replace(" ", "")
+            user = self.context.database.load_user(userL)
+            if user is not None:
+                userText=user["name"] 
+            else :
+                self.ui.show_message("Пользователя не существует")
+                self.registration(userL)
         else:
-            self.ui.show_message(count_quest["questions_per_session"])
-
-    def registration0(self):
-        try:
-            self.session.user = self.ui.ask_input("Введите имя нового пользователя > ")
-            newUser = User(self.context)
-            newUser.createUser()
-        except Exception as e:
-            raise e
-            self.ui.show_message(f"Ошибка. {e}")
-
-    def login(self):
-        user = self.context.database.load_user(self.ui.ask_input("Введите имя пользователя > "))
-
-        if user is not None:
-            #type(user)
-            #self.ui.show_message(user["questions_per_session"])
-            self.context.session.user=user["name"] 
-        else :
-            self.ui.show_message("Пользователя не существует")
-            self.registration()
+            userText = nameLog
+            self.context.session.user=userText 
+            self.run()
+        
             
 
-
-    def registration(self):
-        data={"test":"a1"}
-        dataNewuser = self.context.database.save_user(self.ui.ask_input("Введите имя нового пользователя > "),data)
-        type(dataNewuser)
-
+    def registration(self, nameLog=""):
         
-               
-    
-    def login2(self):
-        #self.context.session.user = self.ui.ask_input("Введите имя пользователя > ")
-        userSession = UserDB(self.context.session.user)
-        user = self.database.load_user(self.ui.ask_input("Введите имя пользователя > "))
-       #self.ui.show_message(userSession.LoadUser())
-        if userSession.LoadUser()==1:
-          self.ui.show_message("Пустое имя пользователя")
-        elif userSession.LoadUser()==2:
-          self.ui.show_message("Данные загружены")
+        loginNum:str=""
 
-        elif userSession.LoadUser()==3:
-          self.ui.show_message("Пользователя не существует")
-          self.registration(nameSession) 
+        if nameLog == "":
+            loginNum=self.ui.ask_input("Введите имя нового пользователя > ").replace(" ", "")
+            self.registration(loginNum)
         else:
-          pass
-             
+            if (self.ui.ask_input(f"Вы хотите добавить нового пользователя ({nameLog}) > (Y/N)")).upper() == "Y":
+                loginNum = nameLog
 
-    def registration1(self, name=""):
-        try:
-            if name=="":
-                #Создание нового пользователя
-                newUser = self.ui.ask_input("Введите имя нового пользователя > ")
             else:
-                newUserAns = self.ui.ask_input(f"Вы уверены что хотите зарегистрировать пользователя с именем {name} (Y/N)> ")
-                if newUserAns=="Y" or newUserAns=="y":
-                  newUser = name
-                else:
-                  exit()
-            newLogin = UserDB(newUser)
-            newLogin.createUser()
-        except Exception as e:
-            raise e
-            self.ui.show_message(f"Ошибка. {e}")
-               
+                self.registration()
+                exit()
+
+
+        data={
+            "name": loginNum,
+            "total_tests": 0,
+            "total_questions": 0,
+            "total_correct": 0,
+            "total_wrong": 0,
+            "questions_per_session": 10,
+            "topics": {}
+        }
+        dataNewuser = self.context.database.save_user(loginNum,data)
+        self.login(loginNum)
+        
         
     def testing(self):
         # Загружаем настройки пользователя  
@@ -258,7 +228,7 @@ class Application:
 
     def run(self):
         # Проверка что файл существует
-        if self.context.session.theme is not None:
+        if self.context.session.theme != "":
             db = self.loadDB()
 #            self.selected_test=nameDb # сохраняем выбранную тему в переменные класса  
         else:
@@ -268,7 +238,7 @@ class Application:
 #            self.ui.show_message(db["title"])
         self.ui.show_message(self.context.session.topic)
         while True:
-            if self.context.session.user is None:
+            if self.context.session.user == "":
                 self.guest_menu()
             else:
                 self.user_menu()
