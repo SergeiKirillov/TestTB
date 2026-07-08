@@ -72,6 +72,7 @@ class Application:
         
         
     def testing(self):
+        #TODO: Модуль тестирования
         # Загружаем настройки пользователя  
         user = User(self.context)
         userSetting = user.LoadUser()
