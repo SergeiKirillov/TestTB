@@ -80,12 +80,13 @@ class Application:
         #user = UserDB(userName)
         self.context.userdb.name=self.context.session.user
         self.context.userdb=self.context.userdb.LoadUser()
-        tt=self.context.userdb.questions_per_session
-        tt1=self.context.userdb.topics
-        ttt1=tt1["electrical"]["question_stats"]
+        countAns =self.context.userdb.questions_per_session #кол-во вопросв при тестировании
+        #tt1=self.context.userdb.topics
+        #numbers_OK_number - переменная в которую мы передаём список вопросов 
+        numbers_OK_number = self.context.userdb.topics["electrical"]["question_stats"]
+        
 
-
-        #userSetting = user.LoadUser()  
+        ##userSetting = user.LoadUser()  
         userSetting = {}
 
         #Если настроек нет то выходим  
@@ -93,38 +94,18 @@ class Application:
             raise SystemExit
         else:
             #Загружаем вопросы
-            #selDB = Path("data")/ "tests" / f"{self.selected_test}.json"
-            selDB = Path("data")/ "tests" / f"{self.context.session.theme}.json"
-            db=QuestionDB(selDB)
-            
-            
+        
+            db=self.context.database.load_test(self.context.session.theme)
+            ans = Testing(numbers_OK_number) #Передаем номера вопросов на которые уже успешно отвечали
+           
             number_god_session=[]
-            #question_stats - ключ словаря где храниться список вопросов на которые успешно ответили
-            #questions_per_session - кол-во вопросов провекрки за секцию
-            #numbers_god_number - переменная в которую мы передаём список вопросов 
-            #numbers_god_number=userSetting["question_stats"]
-            numbers_god_number=[]
-            if self.context.session.theme in userSetting["topics"]:
-               # print(userSetting)
-                numbers_god_number=userSetting["topics"][self.context.session.theme]["question_stats"]
-            
-
-            #try:
-                #необходимо указать путь в хранилице где будут храниться пройденные вопросы 
-                #numbers_god_number=userSetting["question_stats"] 
-            #except KeyError as e:
-                #Если нет такой секции то считаем что это первый запуск этого теста
-            #    numbers_god_number=[]
-            
-            
-            countAns =userSetting["questions_per_session"] #кол-во вопросв при тестировании
-            ans = Testing(numbers_god_number) #Передаем номера вопросов  
-
+           
             # Цикл вопросов от 0 до максимального кол-ва вопрсосов за секцию
             for ask in range(countAns):
                 #генерируем случайное число из избранного списка за исключением вопросов на которые ранее были получены положительные ответы  
                 answers_number = ans.rand_ans()
 
+#FIXME: найти и вывестти билет с этим случайным номером     
                 #достаем Заданный вопрос    
                 question = db.get_question(answers_number) 
                 
