@@ -13,8 +13,8 @@ class TerminalUI(BaseUI):
     def ask_input(self, text):
         return input(text)
 
-    def show_question(self, question):
-        print(question)
+    #def show_question(self, question):
+    #    print(question)
 
     def show_question(self, question_num, total_questions, question_id, question_text, answers):
         print(f"Вопрос {question_id}({question_num + 1}/{total_questions})")

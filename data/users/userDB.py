@@ -10,7 +10,7 @@ class UserDB:
         self.total_questions=0
         self.total_correct=0
         self.total_wrong=0
-        self.questions_per_session=10
+        self.questions_per_session=1
         self.topics={}
 
     @classmethod
@@ -47,8 +47,7 @@ class UserDB:
                     file_path.parent.mkdir(parents=True, exist_ok=True)
                     with open(file_path,"r",encoding="utf-8") as f:
                         #data = json.load(f)
-                        self.from_dict(json.load(f))
-                        return 2
+                        return UserDB.from_dict(json.load(f))
                 except FileNotFoundError:
                     #Файл или директория не найдены
                     return 3

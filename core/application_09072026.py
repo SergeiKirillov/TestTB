@@ -75,18 +75,10 @@ class Application:
     def testing(self):
         #TODO: Модуль тестирования переделать
         # Загружаем настройки пользователя  
-        #userName = self.context.session.user
+        userName = self.context.session.user
         #user = self.context.database.load_user(userL)
-        #user = UserDB(userName)
-        self.context.userdb.name=self.context.session.user
-        self.context.userdb=self.context.userdb.LoadUser()
-        tt=self.context.userdb.questions_per_session
-        tt1=self.context.userdb.topics
-        ttt1=tt1["electrical"]["question_stats"]
-
-
-        #userSetting = user.LoadUser()  
-        userSetting = {}
+        user = User(self.context.session.user) 
+        userSetting = user.LoadUser()
 
         #Если настроек нет то выходим  
         if userSetting is None:
