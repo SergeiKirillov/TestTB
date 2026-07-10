@@ -72,7 +72,7 @@ class Application:
         self.login(loginNum)
         
         
-    def testing(self):
+    def testing1007(self):
         #TODO: Модуль тестирования переделать
         # Загружаем настройки пользователя  
         #userName = self.context.session.user
@@ -106,7 +106,7 @@ class Application:
                 answers_number = ans.rand_ans()
 
 #FIXME: найти и вывестти билет с этим случайным номером     
-                #достаем Заданный вопрос    
+                #достаем Заданный вопрос  db=QuestionDB(selDB) 
                 question = db.get_question(answers_number) 
                 
                 #print(type(question))
@@ -236,3 +236,92 @@ class Application:
             else:
                 self.user_menu()
     
+    def testing(self):
+        #TODO: Модуль тестирования переделать
+        # Загружаем настройки пользователя  
+        userName = self.context.session.user
+        #user = self.context.database.load_user(userL)
+        user = User(self.context) 
+        userSetting = user.LoadUser()
+
+        #Если настроек нет то выходим  
+        if userSetting is None:
+            raise SystemExit
+        else:
+            #Загружаем вопросы
+            #selDB = Path("data")/ "tests" / f"{self.selected_test}.json"
+            selDB = Path("data")/ "tests" / f"{self.context.session.theme}.json"
+            db=QuestionDB(selDB)
+            
+            
+            number_god_session=[]
+            #question_stats - ключ словаря где храниться список вопросов на которые успешно ответили
+            #questions_per_session - кол-во вопросов провекрки за секцию
+            #numbers_god_number - переменная в которую мы передаём список вопросов 
+            #numbers_god_number=userSetting["question_stats"]
+            numbers_god_number=[]
+            if self.context.session.theme in userSetting["topics"]:
+               # print(userSetting)
+                numbers_god_number=userSetting["topics"][self.context.session.theme]["question_stats"]
+            
+
+            #try:
+                #необходимо указать путь в хранилице где будут храниться пройденные вопросы 
+                #numbers_god_number=userSetting["question_stats"] 
+            #except KeyError as e:
+                #Если нет такой секции то считаем что это первый запуск этого теста
+            #    numbers_god_number=[]
+            
+            
+            countAns =userSetting["questions_per_session"] #кол-во вопросв при тестировании
+            ans = Testing(numbers_god_number) #Передаем номера вопросов  
+
+            # Цикл вопросов от 0 до максимального кол-ва вопрсосов за секцию
+            for ask in range(countAns):
+                #генерируем случайное число из избранного списка за исключением вопросов на которые ранее были получены положительные ответы  
+                answers_number = ans.rand_ans()
+
+                #достаем Заданный вопрос    
+                question = db.get_question(answers_number) 
+                
+                #print(type(question))
+                if question:
+                    #current_question_text = f"Вопрос {ask + 1}/{countAns}"
+                    ## обновляем экран с вопросом
+                    #self.ui.show_question(current_question_text)
+                    #self.ui.show_question(question.show())
+                    
+                    #self.ui.show_message(question.id)
+                    #self.ui.show_message(question.question)
+                    #self.ui.show_message(question.answers)
+                    
+                    question_id = question.id
+                    question_text=question.question
+                    #answers=question.show() #возвращает строку
+                    answers=question.answers
+                    #print(answers)
+                    quest_number_user=self.ui.show_question(ask, countAns, question_id, question_text, answers)
+
+                   
+                                             
+                    if question.check_answer(quest_number_user):
+                        #если ответ правильный
+                        self.ui.success("Правильно")
+                        #если правильно то добавляем в список этот вопрос 
+                        number_god_session.append(answers_number)
+                    else:
+                        self.ui.error("Не Правильно")
+                        self.ui.show_message(f"Правильный ответ: {question.get_correct_answer()}")
+
+                    self.ui.pause()
+
+            #блок записи в статистику правильных ответов     
+            #список номеров вопросов на которые был получен правильные ответы
+
+            self.ui.show_message(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
+            full_ans=number_god_session
+            user.save_user(self.context,full_ans)
+
+
+            self.ui.pause()
+        
