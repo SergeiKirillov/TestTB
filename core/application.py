@@ -6,6 +6,7 @@ from core.testManager import TestManager
 from pathlib import Path
 
 
+
 class Application:
 
     #def __init__(self, session, ui_type="terminal", theme=None):
@@ -73,7 +74,10 @@ class Application:
         
         
     def testing1007(self):
-        #TODO: Модуль тестирования переделать
+#[ ]: используем session для передачи параметров (Имя, кол-во вопросов, правильные ответы ранее)
+#[ ]: Используем клас QuestionDB для формирования вопросов, перемешивания ответов и вывод в Session
+#TODO: Модуль тестирования переделать
+
         # Загружаем настройки пользователя  
         #userName = self.context.session.user
         #user = self.context.database.load_user(userL)
