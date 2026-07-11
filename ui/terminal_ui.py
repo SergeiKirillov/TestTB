@@ -3,9 +3,13 @@ from ui.base_ui import BaseUI
 class TerminalUI(BaseUI):
     def show_menu(self, title, options):
         print(title)
+        chislo:int=0
         for i, opt in enumerate(options, 0):
             print(i, opt)
-        return int(input(">"))
+        vvod = input(">") #Вводим число в строке
+        if vvod.isdigit(): #Проверяем что ввели число
+            chislo = int(vvod) #И если число то преобразуем его в число
+        return chislo
     
     def show_message(self, text):
         print(text)

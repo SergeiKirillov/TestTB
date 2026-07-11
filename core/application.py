@@ -1,6 +1,7 @@
 from data.users.user import User
 from data.users.userDB import UserDB
 from core.question_db import QuestionDB
+from core.question_db import Question_v2
 from core.testing import Testing
 from core.testManager import TestManager
 from pathlib import Path
@@ -74,21 +75,21 @@ class Application:
         
         
     def testing1007(self):
-#[ ]: используем session для передачи параметров (Имя, кол-во вопросов, правильные ответы ранее)
-#[ ]: Используем клас QuestionDB для формирования вопросов, перемешивания ответов и вывод в Session
+
+
 #TODO: Модуль тестирования переделать
 
-        # Загружаем настройки пользователя  
-        #userName = self.context.session.user
-        #user = self.context.database.load_user(userL)
-        #user = UserDB(userName)
+#[x]: ---------=Загружаем настройки пользователя  =-----------------------------------------
+# используем session для передачи параметров 
+# self.context.userdb.name - имя пользователя в базе 
+# self.context.session.user - имя пользователя в сессии
+# numbers_OK_number - переменная в которую из файла пользователя мы передаём список вопросов на который получен положительный ответ 
+# countAns - кол-во вопросв при тестировании
+
         self.context.userdb.name=self.context.session.user
         self.context.userdb=self.context.userdb.LoadUser()
         countAns =self.context.userdb.questions_per_session #кол-во вопросв при тестировании
-        #tt1=self.context.userdb.topics
-        #numbers_OK_number - переменная в которую мы передаём список вопросов 
         numbers_OK_number = self.context.userdb.topics["electrical"]["question_stats"]
-        
 
         ##userSetting = user.LoadUser()  
         userSetting = {}
@@ -97,9 +98,10 @@ class Application:
         if userSetting is None:
             raise SystemExit
         else:
-            #Загружаем вопросы
-        
+            
+            #Загружаем все вопросы из файла в переменную в виде словаря
             db=self.context.database.load_test(self.context.session.theme)
+
             ans = Testing(numbers_OK_number) #Передаем номера вопросов на которые уже успешно отвечали
            
             number_god_session=[]
@@ -109,10 +111,20 @@ class Application:
                 #генерируем случайное число из избранного списка за исключением вопросов на которые ранее были получены положительные ответы  
                 answers_number = ans.rand_ans()
 
-#FIXME: найти и вывестти билет с этим случайным номером     
-                #достаем Заданный вопрос  db=QuestionDB(selDB) 
-                question = db.get_question(answers_number) 
+
+#[x]: Используем клас QuestionDB для формирования вопросов, перемешивания ответов и вывод в Session               
+                ##dbTest = QuestionDB(self.context.session.theme)
+                ##question = dbTest.get_question(answers_number)
                 
+                #question0 = self.context.database.get_question(answers_number,db) #Получаем выбранный вопрос в виде словаря 
+                #question=Question_v2(question0) #Переводим словарь в переменные класса
+                
+                question=Question_v2(self.context.database.get_question(answers_number,db)) #Переводим словарь в переменные класса
+                # question.id - номер вопроса
+                # question.question - вопрос
+                # question.comment - комментарий
+
+
                 #print(type(question))
                 if question:
                     #current_question_text = f"Вопрос {ask + 1}/{countAns}"
@@ -148,7 +160,7 @@ class Application:
 
             self.ui.show_message(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
             full_ans=number_god_session
-            user.save_user(self.context,full_ans)
+            #user.save_user(self.context,full_ans)
 
 
             self.ui.pause()
@@ -192,7 +204,7 @@ class Application:
                 )
         match choice:
             case 1:
-                self.testing()
+                self.testing1007()
             case 2:
                 self.learning()
             case 3:

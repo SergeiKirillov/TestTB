@@ -42,3 +42,9 @@ class Database:
         filename = (self.tests / f"{topic}.json")
         return self.load_json(filename)
     
+    def get_question(self, question_id, db):
+        for q in db["questions"]:
+            if q["id"]==question_id:
+                return q #Question_v2(q)
+        return None
+    
