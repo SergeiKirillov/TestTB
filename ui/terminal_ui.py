@@ -38,5 +38,6 @@ class TerminalUI(BaseUI):
         print(text)
 
     def pause(self):
+
         input("\nНажмите Enter для продолжения...")
 

@@ -149,7 +149,8 @@ class Application:
 
             self.ui.show_message(f"Кол- во вопросов {countAns}, кол-во правильных ответов {len(number_god_session)}")
             full_ans=number_god_session
-            #user.save_user(self.context,full_ans)
+            self.context.database.save_user(self.context.session.user, self.context.session.theme, number_god_session)
+            
 
 
             self.ui.pause()
