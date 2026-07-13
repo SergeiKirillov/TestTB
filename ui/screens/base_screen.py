@@ -38,11 +38,15 @@ class BaseScreen(Screen):
     def context(self):
         return App.get_running_app().context
     
-
+    @property
+    def database(self):
+        return self.context.database
     @property
     def session(self):
         return self.context.session
-    
+    @property
+    def userdb(self):
+        return self.context.userdb
     
         
         

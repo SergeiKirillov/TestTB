@@ -22,55 +22,41 @@ class MainScreen(BaseScreen):
         self.title.add_widget(
             Label(text="Программа для проверки знаний", color="yellow", font_size=Constants.HEADER_HEIGHT*0.5)
         )
+        blCenter=BoxLayout()
+        blCenter.orientation="vertical"
         
         txtLoginName=TextInput(_hint_text="Введите табельный номер, и нажмите Enter", size_hint=(None, None), size=(500, 30),multiline=False)
         txtLoginName.input_filter = "int"  # Ограничение ввода только цифрами
         txtLoginName.bind(on_text_validate=self.on_enter_pressed)
         txtLoginName.bind(text=self.limit_length)  # Ограничение длины ввода
+        
+        self.lblLoginNameStatus = Label()
+        self.lblLoginNameStatus.text=""
+        self.lblLoginNameStatus.color="red"
+        self.lblLoginNameStatus.font_size=Constants.HEADER_HEIGHT*0.3
+        
+
+        self.status.add_widget(self.lblLoginNameStatus)
+
+        
         contentCenterAnchor=AnchorLayout(anchor_x = "center",anchor_y = "center")
+        
+#        contentCenterAnchor.add_widget(txtLoginName)
+#        
+#        blCenter.add_widget(contentCenterAnchor)
+#        blCenter.add_widget(self.lblLoginNameStatus)
+#        self.contentCenter.add_widget(blCenter)
+
+
+#        blCenter.add_widget(Widget())
+#        blCenter.add_widget(txtLoginName)
+#        blCenter.add_widget(self.lblLoginNameStatus)
+#        blCenter.add_widget(Widget())
+#        contentCenterAnchor.add_widget(blCenter)
+
         contentCenterAnchor.add_widget(txtLoginName)
         self.contentCenter.add_widget(contentCenterAnchor)
-        
 
-
-
-        #blMain = BoxLayout(orientation="vertical", padding=dp(10), spacing=dp(10))
-        #blMainTitle = BoxLayout(orientation="horizontal", padding=dp(10), spacing=dp(10))
-        #blMainContent = BoxLayout(orientation="horizontal", padding=dp(10), spacing=dp(10))
-        #blMainMenu = BoxLayout(orientation="horizontal", padding=dp(10), spacing=dp(10))
-        #blMainLeft = BoxLayout(orientation="vertical", padding=dp(10), spacing=dp(10), size_hint=(None, 1), width=dp(200))
-        #blMainRight = BoxLayout(orientation="vertical", padding=dp(10), spacing=dp(10),size_hint=(None, 1), width=dp(200))
-        #blMainCenter = BoxLayout(orientation="vertical", padding=dp(10), spacing=dp(10))
-
-        #blMainTitle.add_widget(Label(text="Главный ", color="yellow", font_size=Constants.HEADER_HEIGHT*0.5))
-        
-       
-        ##btnLoginName=Button(text="Войти",size_hint=(None, None),size=(200,25))    
-        #blMainCenter.add_widget(Widget())  # Добавляем пустой виджет для отступа
-        #blMainCenter.add_widget(txtLoginName)
-        ##blMainCenter.add_widget(btnLoginName)
-        #blMainCenter.add_widget(Widget())  # Добавляем пустой виджет для отступа
-        #blMainContent.add_widget(blMainLeft)
-        #blMainContent.add_widget(blMainCenter)
-        #blMainContent.add_widget(blMainRight)
-        #blMainMenu.add_widget(navigatorMenu(self.change_screen))
-        #blMain.add_widget(blMainTitle)
-        #blMain.add_widget(blMainContent)
-        #blMain.add_widget(blMainMenu)
-
-
-        ##btnTheme=Button(text="Выбор темы заданий",size_hint=(None, None),size=(200,20))
-        ##btnTheme.id="btn_select_theme"
-        ##btnTheme.bind(on_release=self.btn_click)
-
-        ##blMainTitle.add_widget(lblTitle)
-        ##blMain.add_widget(blMainTitle)
-        ##blMain.add_widget(btnTheme)
-        ##blMain.add_widget(navigatorMenu(self.change_screen))
-
-        ##self.session.user="019261"
-
-        #self.add_widget(blMain)
 
 
     def change_screen(self, screen):
@@ -86,8 +72,18 @@ class MainScreen(BaseScreen):
 
 #TODO: Обработку нажатия Enter в TextInput поля ввода табельного номера
     def on_enter_pressed(self, instance):
-        self.session.user=instance.text
-        self.change_screen("theme")  # Переход на экран выбора темы
+        
+        user = self.database.load_user(instance.text)
+        print(type(user))
+        if user is not None:
+            self.session.user=instance.text
+            #self.context.session.user=instance.text           
+            self.change_screen("theme")  # Переход на экран выбора темы
+        else:
+            self.lblLoginNameStatus.text="Нет такого пользователя"
+
+
+        
 
 #TODO:ограничение кол-ва вводимых знаков в проле ввода табельного номера
     def limit_length(self, instance, value):
