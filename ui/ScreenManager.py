@@ -13,6 +13,7 @@ from kivy.core.window import Window
 from kivy.utils import platform
 from data.config.constants import Constants
 #from data.config.session import Session
+from data.ApplicationContext import ApplicationContext
 
 
 
@@ -31,9 +32,11 @@ class MyApp(App):
     def __init__(self,context,**kwargs):
         super().__init__(**kwargs)
         self.context=context
+        
     
     def build(self):
         sc=ScreenManager()
+        self.context2=ApplicationContext()
        
 
         sc.add_widget(MainScreen(name="main"))

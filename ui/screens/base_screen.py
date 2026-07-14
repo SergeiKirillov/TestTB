@@ -3,7 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
 
 from kivy.uix.screenmanager import ScreenManager, Screen
-#from data.ApplicationContext import ApplicationContext
+from data.ApplicationContext import ApplicationContext
 from data.config.constants import Constants
 from ui.screens.navigator import navigatorMenu
 
@@ -36,7 +36,13 @@ class BaseScreen(Screen):
     
     @property
     def context(self):
+        #FIXME: Что должно быть за место context
         return App.get_running_app().context
+    
+    @property
+    def context2(self):
+        return App.get_running_app().context2
+        
     
     @property
     def database(self):
@@ -48,6 +54,8 @@ class BaseScreen(Screen):
     def userdb(self):
         return self.context.userdb
     
+    def goto(self, screen):
+        self.manager.current = screen
         
         
     

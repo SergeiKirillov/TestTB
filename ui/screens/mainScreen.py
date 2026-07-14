@@ -19,6 +19,8 @@ class MainScreen(BaseScreen):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
 
+
+
         self.title.add_widget(
             Label(text="Программа для проверки знаний", color="yellow", font_size=Constants.HEADER_HEIGHT*0.5)
         )
@@ -75,7 +77,7 @@ class MainScreen(BaseScreen):
         #self.context.userdb.name=self.context.session.user
         #self.context.userdb=self.context.userdb.LoadUser()
         #print(type(user))
-        
+
         if bool(user): #если словарь не путой 
             self.session.user=instance.text
             #self.context.session.user=instance.text           

@@ -3,7 +3,6 @@ from pathlib import Path
 from rich import print 
 #from data.config.session import Session
 
-
 class UserDB:
     def __init__(self, login=""):
         self.name = login
@@ -43,8 +42,8 @@ class UserDB:
               return 1
             else:
                 try:
-                    #FIXME: Нужно перевести ввод данных на context.database
-                    self.context.database.load_user(userL)
+                    #TODO: Переменная  в имени пути  
+                    
                     file_path = Path("data")/ "users" / f"{self.name}.json"
                     file_path.parent.mkdir(parents=True, exist_ok=True)
                     with open(file_path,"r",encoding="utf-8") as f:
