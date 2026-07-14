@@ -9,9 +9,9 @@ class Database:
         self.users = self.root / "users"
         self.tests = self.root / "tests"
 
-    def load_json(self, filename):
+    def load_json(self, filename)->dict:
         if not filename.exists():
-            return None
+            return {}
 
         with open(filename, "r", encoding="utf-8") as f:
             return json.load(f)
