@@ -1,0 +1,11 @@
+python3 -m venv .venv
+source .venv/bin/activate
+
+
+pip install rich
+
+ kivy---????
+
+main.py --ui terminal
+main.py --ui rich
+main.py --ui kivy
